@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <h1>
-      {{msg}} : {{$route.params.noteId}}
-    </h1>
-  </div>
+  <layout>
+    {{msg}}
+  </layout>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  
-  @Component
+  import Layout from '@/components/Layout.vue';
+  @Component({
+    components: {Layout}
+  })
   export default class TrashDetail extends Vue {
     name = 'Login'
     data(){

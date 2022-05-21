@@ -4,17 +4,17 @@
       用户名
     </div>
     <div class="nav">
-      <router-link to="/note/1">
+      <router-link to="/note/1" title="笔记页">
         <Icon name="notebook"/>
       </router-link>
-      <router-link to="/notebooks">
+      <router-link to="/notebooks" title="笔记本">
         <Icon name="notebookList"/>
       </router-link>
-      <router-link to="/trash/1">
+      <router-link to="/trash/1" title="回收站">
         <Icon name="trash"/>
       </router-link>
       <div class="helper"></div>
-      <Icon class="login-out" name="loginOut"/>
+      <Icon class="login-out" name="loginOut" @click="onLogout"/>
     </div>
   </div>
 </template>
@@ -23,44 +23,59 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import Icon from '@/components/Icon.vue';
+  
   @Component({
     components: {Icon}
   })
   export default class Sidebar extends Vue {
+    onLogout() {
+      console.log('out');
+    }
   }
 </script>
 
 <style lang="scss" scoped>
-  .sidebar{
-    border: 1px solid blue;
+  @import "~@/assets/style/helper.scss";
+  .sidebar {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 56px;
-    background:#2c333c;
-    .user-name{
+    background: #2c333c;
+    
+    .user-name {
+      text-align: center;
       width: 30px;
       height: 60px;
       background: white;
     }
-    .nav{
-      margin-top: 5px;
+    
+    .nav {
       height: 100%;
       display: flex;
-      align-items: center;
       flex-direction: column;
-      .helper{
+      
+      .router-link-active{
+        .icon{
+          color:$color-highlight
+        }
+      }
+      
+      .helper {
         flex: 1;
       }
-      .icon{
+      
+      .icon {
         color: #fff;
-        margin-top: 8px;
+        margin-top: 15px;
         width: 1.4em;
         height: 1.4em;
+        cursor: pointer;
       }
-      .login-out{
-        margin-bottom: 10px;
+      
+      .login-out {
+        margin-bottom: 20px;
       }
     }
   }

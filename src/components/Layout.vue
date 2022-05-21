@@ -1,7 +1,7 @@
 <template>
   <div class="layout-wrapper">
     <sidebar></sidebar>
-    <div class="content">
+    <div class="main-content">
       <slot/>
     </div>
   </div>
@@ -23,9 +23,8 @@
   .layout-wrapper{
     display: flex;
     flex-direction: row;
-    border:3px solid green;
     min-height: 100%;
-    .content{
+    .main-content{
       flex: 1;
     }
   }

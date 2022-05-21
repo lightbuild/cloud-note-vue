@@ -1,6 +1,5 @@
 <template>
   <layout>
-      <button value="新建笔记本"></button>
       <ul>
         <li>吃饭</li>
         <li>衣服</li>

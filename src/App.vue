@@ -18,6 +18,5 @@
   
   html,body,#app{
     height: 100%;
-    border: 5px solid red;
   }
 </style>
