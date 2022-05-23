@@ -5,17 +5,19 @@
         <div class="main">
         </div>
         <div class="form">
-          <h3>创建账户</h3>
+          <h3 @click="showRegister">创建账户</h3>
           <div v-show="true" class="register">
             <input type="text" placeholder="用户名">
             <input type="text" placeholder="密码">
             <div class="button">创建账号</div>
+            <p :class="{error:register.isError}">{{register.notice}}</p>
           </div>
           <h3>登录</h3>
           <div v-show="false" class="login">
             <input type="text" placeholder="输入用户名">
             <input type="text" placeholder="密码">
             <div class="button">登录</div>
+            <p>{{login.notice}}</p>
           </div>
         </div>
       </div>
@@ -34,11 +36,25 @@
     components: {Layout, Icon}
   })
   export default class Login extends Vue {
-    data() {
+    data():Data{
       return {
-        msg: 'This is login page'
+        isShowLogin:true,
+        isShowRegister:false,
+        login:{
+          username:'',
+          password:'',
+          notice:'输入用户名和密码',
+          isError:false
+        },
+        register: {
+          username: '',
+          password: '',
+          notice:'创建账号后，请记住用户名和密码',
+          isError:false
+        }
       };
     }
+    
   }
 </script>
 
