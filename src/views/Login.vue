@@ -6,18 +6,19 @@
         </div>
         <div class="form">
           <h3 @click="showRegister">创建账户</h3>
-          <div v-show="true" class="register">
-            <input type="text" placeholder="用户名">
-            <input type="text" placeholder="密码">
-            <div class="button">创建账号</div>
-            <p :class="{error:register.isError}">{{register.notice}}</p>
+          <div v-show="user.isShowRegister" class="register">
+            <input type="text" v-model="user.register.username" placeholder="用户名">
+            <input type="text" v-model="user.register.password" placeholder="密码">
+            <div class="button" @click="onRegister">创建账号</div>
+            <p :class="{error:user.register.isError}">{{ user.register.notice }}</p>
           </div>
-          <h3>登录</h3>
-          <div v-show="false" class="login">
-            <input type="text" placeholder="输入用户名">
-            <input type="text" placeholder="密码">
-            <div class="button">登录</div>
-            <p>{{login.notice}}</p>
+          <h3 @click="showLogin">登录</h3>
+          <div v-show="user.isShowLogin" class="login">
+            {{user.login}}
+            <input type="text" v-model="user.login.username" placeholder="输入用户名">
+            <input type="text" v-model="user.login.password" placeholder="密码">
+            <div class="button" @click="onLogin">登录</div>
+            <p :class="{error:user.login.isError}">{{ user.login.notice }}</p>
           </div>
         </div>
       </div>
@@ -32,29 +33,63 @@
   import Icon from '@/components/Icon.vue';
   import Layout from '@/components/Layout.vue';
   
+  
   @Component({
     components: {Layout, Icon}
   })
   export default class Login extends Vue {
-    data():Data{
-      return {
-        isShowLogin:true,
-        isShowRegister:false,
-        login:{
-          username:'',
-          password:'',
-          notice:'输入用户名和密码',
-          isError:false
+    user: UserData = {
+        isShowLogin: true,
+        isShowRegister: false,
+        login: {
+          username: '',
+          password: '',
+          notice: '输入用户名和密码',
+          isError: false
         },
         register: {
           username: '',
           password: '',
-          notice:'创建账号后，请记住用户名和密码',
-          isError:false
+          notice: '创建账号后，请记住用户名和密码',
+          isError: false
         }
-      };
     }
-    
+    showRegister():void{
+      this.user.isShowLogin= false;
+      this.user.isShowRegister= true;
+    }
+    showLogin():void{
+      this.user.isShowLogin = true;
+      this.user.isShowRegister = false;
+    }
+    onRegister():void{
+      if(!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.register.username)){
+        this.user.register.isError = true;
+        this.user.register.notice = '用户名3~15个字符，仅限于字母数字下划线中文'
+        return
+      }
+      if(!/^.{6,16}$/.test(this.user.register.password)){
+        this.user.register.isError = true;
+        this.user.register.notice= '密码长度为6~16个字符'
+        return
+      }
+      this.user.register.isError = false;
+      this.user.register.notice= '';
+    }
+    onLogin():void{
+      if(!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.login.username)){
+        this.user.login.isError = true;
+        this.user.login.notice = '用户名3~15个字符，仅限于字母数字下划线中文'
+        return
+      }
+      if(!/^.{6,16}$/.test(this.user.login.password)){
+        this.user.login.isError = true;
+        this.user.login.notice= '密码长度为6~16个字符'
+        return
+      }
+      this.user.login.isError = false;
+      this.user.login.notice= '';
+    }
   }
 </script>
 
@@ -105,9 +140,9 @@
           }
         }
         
-        .button{
+        .button {
           background-color: #2bb964;
-          height:36px;
+          height: 36px;
           line-height: 36px;
           text-align: center;
           font-weight: bold;
@@ -117,11 +152,11 @@
           cursor: pointer;
         }
         
-        .register,.login{
+        .register, .login {
           padding: 10px 20px;
           border-top: 1px solid #eee;
           
-          input{
+          input {
             display: block;
             width: 100%;
             height: 35px;
@@ -133,18 +168,22 @@
             font-size: 14px;
             margin-top: 10px;
           }
-          input:focus{
-            border:3px solid #9dcaf8;
+          
+          input:focus {
+            border: 3px solid #9dcaf8;
           }
-          p{
-            font-size:12px;
+          
+          p {
+            font-size: 12px;
             margin-top: 10px;
             color: #444;
           }
-          .error{
-            color:red;
+          
+          .error {
+            color: red;
           }
-          .login{
+          
+          .login {
             border-top: 0;
           }
         }
