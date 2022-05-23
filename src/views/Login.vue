@@ -2,24 +2,26 @@
   <layout>
     <div class="overlay">
       <div class="login-wrapper">
-        <div class="main">
-        </div>
+        <div class="main"></div>
         <div class="form">
           <h3 @click="showRegister">创建账户</h3>
-          <div v-show="user.isShowRegister" class="register">
-            <input type="text" v-model="user.register.username" placeholder="用户名">
-            <input type="text" v-model="user.register.password" placeholder="密码">
-            <div class="button" @click="onRegister">创建账号</div>
-            <p :class="{error:user.register.isError}">{{ user.register.notice }}</p>
-          </div>
+          <transition name="slide">
+            <div :class="{show: user.isShowRegister}" class="register">
+              <input type="text" v-model="user.register.username" placeholder="用户名">
+              <input type="text" v-model="user.register.password" placeholder="密码">
+              <div class="button" @click="onRegister">创建账号</div>
+              <p :class="{error:user.register.isError}">{{ user.register.notice }}</p>
+            </div>
+          </transition>
           <h3 @click="showLogin">登录</h3>
-          <div v-show="user.isShowLogin" class="login">
-            {{user.login}}
-            <input type="text" v-model="user.login.username" placeholder="输入用户名">
-            <input type="text" v-model="user.login.password" placeholder="密码">
-            <div class="button" @click="onLogin">登录</div>
-            <p :class="{error:user.login.isError}">{{ user.login.notice }}</p>
-          </div>
+          <transition name="slide">
+            <div :class="{show:user.isShowLogin}" class="login">
+              <input type="text" v-model="user.login.username" placeholder="输入用户名">
+              <input type="text" v-model="user.login.password" placeholder="密码">
+              <div class="button" @click="onLogin">登录</div>
+              <p :class="{error:user.login.isError}">{{ user.login.notice }}</p>
+            </div>
+          </transition>
         </div>
       </div>
     </div>
@@ -39,56 +41,60 @@
   })
   export default class Login extends Vue {
     user: UserData = {
-        isShowLogin: true,
-        isShowRegister: false,
-        login: {
-          username: '',
-          password: '',
-          notice: '输入用户名和密码',
-          isError: false
-        },
-        register: {
-          username: '',
-          password: '',
-          notice: '创建账号后，请记住用户名和密码',
-          isError: false
-        }
+      isShowLogin: true,
+      isShowRegister: false,
+      login: {
+        username: '',
+        password: '',
+        notice: '输入用户名和密码',
+        isError: false
+      },
+      register: {
+        username: '',
+        password: '',
+        notice: '创建账号后，请记住用户名和密码',
+        isError: false
+      }
+    };
+    
+    showRegister(): void {
+      this.user.isShowLogin = false;
+      this.user.isShowRegister = true;
     }
-    showRegister():void{
-      this.user.isShowLogin= false;
-      this.user.isShowRegister= true;
-    }
-    showLogin():void{
+    
+    showLogin(): void {
       this.user.isShowLogin = true;
       this.user.isShowRegister = false;
     }
-    onRegister():void{
-      if(!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.register.username)){
+    
+    onRegister(): void {
+      if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.register.username)) {
         this.user.register.isError = true;
-        this.user.register.notice = '用户名3~15个字符，仅限于字母数字下划线中文'
-        return
+        this.user.register.notice = '用户名3~15个字符，仅限于字母数字下划线中文';
+        return;
       }
-      if(!/^.{6,16}$/.test(this.user.register.password)){
+      if (!/^.{6,16}$/.test(this.user.register.password)) {
         this.user.register.isError = true;
-        this.user.register.notice= '密码长度为6~16个字符'
-        return
+        this.user.register.notice = '密码长度为6~16个字符';
+        return;
       }
       this.user.register.isError = false;
-      this.user.register.notice= '';
+      this.user.register.notice = '';
     }
-    onLogin():void{
-      if(!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.login.username)){
+    
+    onLogin(): void {
+      if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.login.username)) {
         this.user.login.isError = true;
-        this.user.login.notice = '用户名3~15个字符，仅限于字母数字下划线中文'
-        return
+        this.user.login.notice = '用户名3~15个字符，仅限于字母数字下划线中文';
+        return;
       }
-      if(!/^.{6,16}$/.test(this.user.login.password)){
+      if (!/^.{6,16}$/.test(this.user.login.password)) {
         this.user.login.isError = true;
-        this.user.login.notice= '密码长度为6~16个字符'
-        return
+        this.user.login.notice = '密码长度为6~16个字符';
+        return;
       }
       this.user.login.isError = false;
-      this.user.login.notice= '';
+      this.user.login.notice = '';
     }
   }
 </script>
@@ -153,8 +159,15 @@
         }
         
         .register, .login {
-          padding: 10px 20px;
+          padding: 0px 20px;
           border-top: 1px solid #eee;
+          height: 0;
+          overflow: hidden;
+          transition: height .4s;
+          
+          &.show {
+            height: 193px;
+          }
           
           input {
             display: block;
