@@ -35,12 +35,11 @@
   import Icon from '@/components/Icon.vue';
   import Layout from '@/components/Layout.vue';
   import auth from '@/lib/apis/auth';
-  import { mixins } from 'vue-class-component';
   
   @Component({
     components: {Layout, Icon}
   })
-  export default class Login extends mixins(auth) {
+  export default class Login extends Vue {
     user: UserData = {
       isShowLogin: true,
       isShowRegister: false,
@@ -94,7 +93,10 @@
       }
       this.user.login.isError = false;
       this.user.login.notice = '';
-      
+      auth.login({
+        username:this.user.login.username,
+        password:this.user.login.password
+      })
     }
   }
 </script>
