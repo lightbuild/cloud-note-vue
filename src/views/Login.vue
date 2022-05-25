@@ -34,8 +34,8 @@
   import {Component} from 'vue-property-decorator';
   import Icon from '@/components/Icon.vue';
   import Layout from '@/components/Layout.vue';
-  
-  
+  import auth from '@/lib/apis/auth';
+
   @Component({
     components: {Layout, Icon}
   })
@@ -55,7 +55,7 @@
         notice: '创建账号后，请记住用户名和密码',
         isError: false
       }
-    };
+    }
     
     showRegister(): void {
       this.user.isShowLogin = false;
@@ -78,8 +78,17 @@
         this.user.register.notice = '密码长度为6~16个字符';
         return;
       }
-      this.user.register.isError = false;
-      this.user.register.notice = '';
+      auth.register({
+        username: this.user.register.username,
+        password: this.user.register.password
+      }).then(data => {
+        this.user.register.isError = false;
+        this.user.register.notice = '';
+        this.$router.push({path:'notebooks'})
+      }).catch(data => {
+        this.user.register.isError = true;
+        this.user.register.notice = data.msg
+      });
     }
     
     onLogin(): void {
@@ -93,8 +102,17 @@
         this.user.login.notice = '密码长度为6~16个字符';
         return;
       }
-      this.user.login.isError = false;
-      this.user.login.notice = '';
+      auth.login({
+        username: this.user.login.username,
+        password: this.user.login.password
+      }).then(data => {
+        this.user.login.isError = false;
+        this.user.login.notice = '';
+        this.$router.push({path:'notebooks'})
+      }).catch(data =>{
+        this.user.login.isError = true;
+        this.user.login.notice = data.msg
+      });
     }
   }
 </script>

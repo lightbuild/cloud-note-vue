@@ -1,8 +1,6 @@
 <template>
   <div class="sidebar">
-    <div class="user-name">
-      用户名
-    </div>
+    <avatar/>
     <div class="nav">
       <router-link to="/note/1" title="笔记页">
         <Icon name="notebook"/>
@@ -23,13 +21,18 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import Icon from '@/components/Icon.vue';
+  import auth from '@/lib/apis/auth'
+  import Avatar from '@/components/Avatar.vue';
   
   @Component({
-    components: {Icon}
+    components: {Avatar, Icon}
   })
   export default class Sidebar extends Vue {
     onLogout() {
-      console.log('out');
+      auth.logout().then(data=>{
+        this.$router.push({path:'login'})
+        console.log(data);
+      })
     }
   }
 </script>
@@ -43,13 +46,6 @@
     align-items: center;
     width: 56px;
     background: #2c333c;
-    
-    .user-name {
-      text-align: center;
-      width: 30px;
-      height: 60px;
-      background: white;
-    }
     
     .nav {
       height: 100%;

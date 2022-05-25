@@ -25,6 +25,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path:'/notebooks',
+    name:'notebooks',
     component:NotebookList
   },
   {
