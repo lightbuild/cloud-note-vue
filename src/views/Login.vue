@@ -35,7 +35,9 @@
   import Icon from '@/components/Icon.vue';
   import Layout from '@/components/Layout.vue';
   import auth from '@/lib/apis/auth';
-  
+  auth.getInfo().then(data=>{
+    console.log(data);
+  })
   @Component({
     components: {Layout, Icon}
   })
@@ -66,6 +68,7 @@
       this.user.isShowLogin = true;
       this.user.isShowRegister = false;
     }
+    
     onRegister(): void {
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.register.username)) {
         this.user.register.isError = true;
@@ -79,7 +82,14 @@
       }
       this.user.register.isError = false;
       this.user.register.notice = '';
+      auth.register({
+        username: this.user.register.username,
+        password: this.user.register.password
+      }).then(data => {
+        console.log(data);
+      });
     }
+    
     onLogin(): void {
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.login.username)) {
         this.user.login.isError = true;
@@ -94,9 +104,11 @@
       this.user.login.isError = false;
       this.user.login.notice = '';
       auth.login({
-        username:this.user.login.username,
-        password:this.user.login.password
-      })
+        username: this.user.login.username,
+        password: this.user.login.password
+      }).then(data => {
+        console.log(data);
+      });
     }
   }
 </script>

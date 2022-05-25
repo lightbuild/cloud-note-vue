@@ -23,13 +23,16 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import Icon from '@/components/Icon.vue';
+  import auth from '@/lib/apis/auth'
   
   @Component({
     components: {Icon}
   })
   export default class Sidebar extends Vue {
     onLogout() {
-      console.log('out');
+      auth.logout().then(data=>{
+        console.log(data);
+      })
     }
   }
 </script>
