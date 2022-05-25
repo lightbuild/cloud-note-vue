@@ -34,12 +34,13 @@
   import {Component} from 'vue-property-decorator';
   import Icon from '@/components/Icon.vue';
   import Layout from '@/components/Layout.vue';
-  
+  import auth from '@/lib/apis/auth';
+  import { mixins } from 'vue-class-component';
   
   @Component({
     components: {Layout, Icon}
   })
-  export default class Login extends Vue {
+  export default class Login extends mixins(auth) {
     user: UserData = {
       isShowLogin: true,
       isShowRegister: false,
@@ -55,7 +56,7 @@
         notice: '创建账号后，请记住用户名和密码',
         isError: false
       }
-    };
+    }
     
     showRegister(): void {
       this.user.isShowLogin = false;
@@ -66,7 +67,6 @@
       this.user.isShowLogin = true;
       this.user.isShowRegister = false;
     }
-    
     onRegister(): void {
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.register.username)) {
         this.user.register.isError = true;
@@ -81,7 +81,6 @@
       this.user.register.isError = false;
       this.user.register.notice = '';
     }
-    
     onLogin(): void {
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.login.username)) {
         this.user.login.isError = true;
@@ -95,6 +94,7 @@
       }
       this.user.login.isError = false;
       this.user.login.notice = '';
+      
     }
   }
 </script>
