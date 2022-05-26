@@ -1,5 +1,5 @@
 <template>
-  <layout>
+  <layout class-prefix="login">
     <div class="overlay">
       <div class="login-wrapper">
         <div class="main"></div>

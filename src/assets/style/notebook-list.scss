@@ -1,0 +1,101 @@
+@import "~@/assets/style/helper.scss";
+
+::v-deep .notebookList-content {
+  background: #eee;
+}
+
+.btn {
+  width: fit-content;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  margin-left: 10px;
+  background: #fff;
+  padding: 2px 4px;
+
+  .icon {
+    width: 1.3em;
+    height: 1.3em;
+    margin-right: 4px;
+  }
+}
+
+input {
+  width: 300px;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 3px 5px;
+  outline: none;
+}
+
+header {
+  padding: 12px;
+  border-bottom: 1px solid #ccc;
+}
+
+main {
+  padding: 30px 40px;
+
+  .notebook {
+    display: block;
+    cursor: pointer;
+  }
+
+  a.notebook:hover {
+    background-color: #f7fafd;
+  }
+
+  a.notebook div {
+    border-bottom: 1px solid #ebebeb;
+    padding: 12px 14px;
+  }
+
+  .error-msg {
+    font-size: 12px;
+    color: red;
+  }
+}
+
+.main-wrapper {
+  max-width: 966px;
+  margin: 0 auto;
+
+  .icon {
+    color: #b3c0c8;
+    width: 1.3em;
+    height: 1.3em;
+    margin-right: 5px;
+  }
+
+  h3 {
+    font-size: 12px;
+    color: #000;
+  }
+
+  .book-list {
+    @extend %clearFix;
+
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+    background-color: #fff;
+    border-radius: 4px;
+    font-weight: bold;
+
+    span {
+      font-size: 12px;
+      font-weight: bold;
+      color: #b3c0c8;
+    }
+
+    .data, .action {
+      float: right;
+      margin-left: 10px;
+    }
+  }
+}

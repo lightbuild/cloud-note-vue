@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout class-prefix="notebookDetail">
     {{msg}}
   </Layout>
 </template>

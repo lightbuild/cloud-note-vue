@@ -1,5 +1,5 @@
 <template>
-  <layout>
+  <layout class-prefix="trashDetail">
     {{msg}}
   </layout>
 </template>
