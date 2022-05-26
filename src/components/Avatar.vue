@@ -6,6 +6,7 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import auth from '@/lib/apis/auth';
+  import Bus from '@/lib/helper/Bus';
   
   @Component
   export default class Avatar extends Vue {
@@ -16,6 +17,10 @@
       return this.user.username.charAt(0)
     }
     created(){
+      Bus.$on('userInfo',user =>{
+        this.username = user.username
+      })
+      
       auth.getInfo().then((res:any) => {
         if(res.isLogin){
           this.user.username = res.data.username;

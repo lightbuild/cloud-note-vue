@@ -35,7 +35,8 @@
   import Icon from '@/components/Icon.vue';
   import Layout from '@/components/Layout.vue';
   import auth from '@/lib/apis/auth';
-
+  import Bus from '@/lib/helper/Bus';
+  
   @Component({
     components: {Layout, Icon}
   })
@@ -55,7 +56,7 @@
         notice: '创建账号后，请记住用户名和密码',
         isError: false
       }
-    }
+    };
     
     showRegister(): void {
       this.user.isShowLogin = false;
@@ -84,10 +85,11 @@
       }).then(data => {
         this.user.register.isError = false;
         this.user.register.notice = '';
-        this.$router.push({path:'notebooks'})
+        Bus.$emit('userInfo', {username: this.user.login.username});
+        this.$router.push({path: 'notebooks'});
       }).catch(data => {
         this.user.register.isError = true;
-        this.user.register.notice = data.msg
+        this.user.register.notice = data.msg;
       });
     }
     
@@ -108,10 +110,11 @@
       }).then(data => {
         this.user.login.isError = false;
         this.user.login.notice = '';
-        this.$router.push({path:'notebooks'})
-      }).catch(data =>{
+        Bus.$emit('userInfo', {username: this.user.login.username});
+        this.$router.push({path: 'notebooks'});
+      }).catch(data => {
         this.user.login.isError = true;
-        this.user.login.notice = data.msg
+        this.user.login.notice = data.msg;
       });
     }
   }
