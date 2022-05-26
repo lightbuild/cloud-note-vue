@@ -8,15 +8,17 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import Layout from '@/components/Layout.vue';
+  import auth from '@/lib/apis/auth';
   @Component({
     components: {Layout}
   })
   export default class TrashDetail extends Vue {
-    name = 'Login'
-    data(){
-      return {
-        msg:"This is TrashDetail page"
-      }
+    created(){
+      auth.getInfo().then(res=>{
+        if (!res.isLogin){
+          this.$router.push({path:'/login'})
+        }
+      })
     }
   }
 </script>
