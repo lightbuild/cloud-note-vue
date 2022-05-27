@@ -48,7 +48,7 @@
     }
     
     created() {
-      auth.getInfo().then(res => {
+      auth.getInfo().then((res:any) => {
         if (!res.isLogin) {
           this.$router.push({path: '/login'});
         }
