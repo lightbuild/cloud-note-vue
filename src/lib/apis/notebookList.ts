@@ -12,7 +12,6 @@ export default{
   return new Promise((resolve,reject)=>{
     request(URL.GET)
       .then(res=>{
-        console.log(res)
         resolve(res)
       }).catch(err=>{
         reject(err)

@@ -38,21 +38,27 @@
   import Layout from '@/components/Layout.vue';
   import auth from '@/lib/apis/auth';
   import Icon from '@/components/Icon.vue';
-  
+  import notebookList from '@/lib/apis/notebookList';
   @Component({
     components: {Icon, Layout}
   })
   export default class NotebookList extends Vue {
-    onCreate() {
-      console.log('增加笔记本');
-    }
     
     created() {
-      auth.getInfo().then((res:any) => {
-        if (!res.isLogin) {
+      auth.getInfo().then(res => {
+        if(!res.isLogin) {
           this.$router.push({path: '/login'});
         }
       });
+      notebookList.getAll()
+      .then(res=>{
+        console.log(res);
+      })
+    }
+  
+  
+    onCreate() {
+      console.log('增加笔记本');
     }
   }
 </script>

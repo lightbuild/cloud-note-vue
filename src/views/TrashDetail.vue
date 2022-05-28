@@ -14,7 +14,7 @@
   })
   export default class TrashDetail extends Vue {
     created(){
-      auth.getInfo().then(res=>{
+      auth.getInfo().then(res =>{
         if (!res.isLogin){
           this.$router.push({path:'/login'})
         }

@@ -79,7 +79,7 @@
         this.user.register.notice = '密码长度为6~16个字符';
         return;
       }
-      auth.register({
+      auth.register<RegisterData>({
         username: this.user.register.username,
         password: this.user.register.password
       }).then(data => {

@@ -8,15 +8,15 @@ const URL = {
 }
 export default {
   register({username,password}:any){
-    return request(URL.REGISTER,'POST',{username,password})
+    return request<RegisterData>(URL.REGISTER,'POST',{username,password})
   },
   login({username,password}:any){
-    return request(URL.LOGIN,'POST',{username,password})
+    return request<AuthLoginData>(URL.LOGIN,'POST',{username,password})
   },
   logout(){
-    return request(URL.LOGOUT)
+    return request<AuthLogoutData>(URL.LOGOUT)
   },
   getInfo(){
-    return request(URL.GET_INFO)
+    return request<AuthData>(URL.GET_INFO)
   }
 }

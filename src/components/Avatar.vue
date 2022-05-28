@@ -17,11 +17,11 @@
       return this.user.username.charAt(0)
     }
     created(){
-      Bus.$on('userInfo',user =>{
-        this.username = user.username
+      Bus.$on('userInfo',(user:{username:string}) =>{
+        this.user.username = user.username
       })
       
-      auth.getInfo().then((res:any) => {
+      auth.getInfo<AuthData>().then(res => {
         if(res.isLogin){
           this.user.username = res.data.username;
         }
