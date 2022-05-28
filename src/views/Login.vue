@@ -58,17 +58,17 @@
       }
     };
     
-    showRegister(): void {
+    showRegister(){
       this.user.isShowLogin = false;
       this.user.isShowRegister = true;
     }
     
-    showLogin(): void {
+    showLogin(){
       this.user.isShowLogin = true;
       this.user.isShowRegister = false;
     }
     
-    onRegister(): void {
+    onRegister(){
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.register.username)) {
         this.user.register.isError = true;
         this.user.register.notice = '用户名3~15个字符，仅限于字母数字下划线中文';
@@ -79,7 +79,7 @@
         this.user.register.notice = '密码长度为6~16个字符';
         return;
       }
-      auth.register<RegisterData>({
+      auth.register({
         username: this.user.register.username,
         password: this.user.register.password
       }).then(data => {
@@ -93,7 +93,7 @@
       });
     }
     
-    onLogin(): void {
+    onLogin(){
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.login.username)) {
         this.user.login.isError = true;
         this.user.login.notice = '用户名3~15个字符，仅限于字母数字下划线中文';

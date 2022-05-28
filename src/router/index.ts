@@ -30,6 +30,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path:'/note/:noteId',
+    name:'note',
     component:NoteDetail
   },
   {

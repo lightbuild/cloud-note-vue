@@ -9,24 +9,17 @@ const URL = {
 
 export default{
   getAll(){
-  return new Promise((resolve,reject)=>{
-    request(URL.GET)
-      .then(res=>{
-        resolve(res)
-      }).catch(err=>{
-        reject(err)
-    })
-  })
+    return request<NotebooksListData>(URL.GET)
   },
 
-  updateNotebooks(notebookId:any,{title=''}={title:''}){
-      return request(URL.UPDATE.replace(':id',notebookId),'PATCH',{title})
+  updateNotebooks(notebookId:any,title:string){
+      return request<NotebooksModifyData>(URL.UPDATE.replace(':id',notebookId),'PATCH',{title})
   },
 
   deleteNotebook(notebookId:any){
-    return request(URL.DELETE.replace(':id',notebookId),'DELETE')
+    return request<NotebooksModifyData>(URL.DELETE.replace(':id',notebookId),'DELETE')
   },
-  addNotebook({title=''} = {title:''}){
-    return request(URL.ADD,'POST',{title})
+  addNotebook(title:string){
+    return request<NotebooksModifyData>(URL.ADD,'POST',{title})
   }
 }

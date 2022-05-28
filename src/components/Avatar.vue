@@ -21,9 +21,9 @@
         this.user.username = user.username
       })
       
-      auth.getInfo<AuthData>().then(res => {
+      auth.getInfo().then(res => {
         if(res.isLogin){
-          this.user.username = res.data.username;
+          this.user.username = res.data!.username;
         }
       })
     }

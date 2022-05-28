@@ -60,11 +60,13 @@ interface AuthLoginData {
 }
 
 type NotebooksListBaseData = {
-  id?: number,
-  title?: string,
-  userId?: number,
-  createdAt?: string,
-  updatedAt?: string
+  id: number,
+  noteCounts:number,
+  title: string,
+  userId: number,
+  createdAt: string,
+  updatedAt: string
+  beatifyCreatedAt?:string
 }
 
 interface NotebooksListData {
@@ -78,13 +80,14 @@ interface NotebooksModifyData {
 }
 
 type NotebooksBaseData = {
-  isDelete?:boolean,
-  id?:number,
-  title?:string,
-  content?:string,
-  userId?:string,
-  updatedAt?:string,
-  createdAt?:string
+  isDelete:boolean,
+  id:number,
+  title:string,
+  content:string,
+  userId:string,
+  updatedAt:string,
+  createdAt:string,
+  beatifyCreatedAt?:string
 }
 
 interface NotebooksData {
