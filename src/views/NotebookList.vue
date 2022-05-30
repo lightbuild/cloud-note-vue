@@ -15,8 +15,8 @@
             <div>
               <span class="icon-notebook"><Icon name="notebook"/></span>{{ notebook.title }}
               <span>{{notebook.noteCounts}}</span>
-              <span class="action" @click.stop.prevent="onEdit()">编辑</span>
-              <span class="action" @click.stop.prevent="onDelete()">删除</span>
+              <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>
+              <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>
               <span class="data">{{ notebook.beatifyCreatedAt}}</span>
             </div>
           </router-link>
@@ -49,7 +49,7 @@
       });
       Notebooks.getAll()
         .then(res => {
-          this.notebooksList = res.data!;
+          this.notebooksList = res.data || [];
           console.log(res);
         });
     }
@@ -61,9 +61,8 @@
           alert('笔记本名不能为空');
           return;
         }else{
-          Notebooks.addNotebook(title)
+          Notebooks.addNotebook({title})
             .then(res => {
-              console.log(beautifyDate(res.data!.createdAt));
               res.data!.beatifyCreatedAt = beautifyDate(res.data!.createdAt);
               this.notebooksList.push(res.data!);
               alert(res.msg);
@@ -74,26 +73,33 @@
       }
     }
     
-    onEdit() {
-      console.log('编辑');
-      // let title = window.prompt('修改标题', notebook.title);
-      // Notebooks.updateNotebooks(notebook.id, {title})
-      //   .then(res => {
-      //     notebook.title = title;
-      //     alert(res.msg);
-      //   });
+    onEdit(notebook:NotebooksListBaseData) {
+      console.log('edit here');
+      let title = window.prompt('修改标题', notebook.title);
+      if(title !==null){
+        if(title.trim() === ''){
+          alert('笔记本名不能为空')
+          return
+        }else {
+          Notebooks.updateNotebooks(notebook.id, {title})
+            .then(res => {
+              notebook.title= title!;
+              alert(res.msg);
+            })
+        }
+      }
     }
     
-    onDelete() {
-      console.log('删除');
-      // let isConfirm = window.prompt('你确定要删除吗');
-      // if (isConfirm) {
-      //   Notebooks.deleteNotebook(this.notebooksList.id)
-      //   .then((res=>{
-      //     this.notebooksList.splice(this.notebooksList.indexOf(notebook),1)
-      //     alert(res.msg)
-      //   }))
-      // }
+    onDelete(notebook:NotebooksListBaseData) {
+      let isConfirm = window.prompt('你确定要删除吗');
+      if (isConfirm) {//这里有问题，等那个ui组件优化把
+        Notebooks.deleteNotebook(notebook.id)
+        .then((res=>{
+          this.notebooksList.splice(this.notebooksList.indexOf(notebook),1)
+          console.log(res);
+          alert(res.msg)
+        }))
+      }
     }
   }
 </script>

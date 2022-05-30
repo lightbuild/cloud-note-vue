@@ -18,6 +18,5 @@ export default function beautifyDate(dateStr:any){
     default:
       str = Math.floor(space/(1000*3600*24))+'天前'
   }
-  console.log('变美了');
   return str
 }

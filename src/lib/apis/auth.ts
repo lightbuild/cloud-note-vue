@@ -17,8 +17,6 @@ export default {
     return request<AuthLogoutData>(URL.LOGOUT)
   },
   getInfo(){
-    return request<AuthData>(URL.GET_INFO).then().catch(err=>{
-      console.log(err)
-    })
+    return request<AuthData>(URL.GET_INFO)
   }
 }

@@ -30,8 +30,8 @@
   export default class Sidebar extends Vue {
     onLogout() {
       auth.logout().then(data=>{
-        this.$router.push({path:'login'})
         console.log(data);
+        this.$router.push({path:'login'})
       })
     }
   }
