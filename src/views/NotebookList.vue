@@ -34,13 +34,14 @@
   import Icon from '@/components/Icon.vue';
   import Notebooks from '@/lib/apis/notebookList';
   import beautifyDate from '@/lib/helper/beautifyDate';
-  
+  import {MessageBoxInputData} from 'element-ui/types/message-box';
+
   @Component({
     components: {Icon, Layout}
   })
   export default class NotebookList extends Vue {
     notebooksList: NotebooksListBaseData[] = [];
-    
+
     created() {
       auth.getInfo().then(res => {
         if (!res.isLogin) {
@@ -55,51 +56,72 @@
     }
     
     onCreate() {
-      let title = window.prompt('请输入笔记本名');
-      if(title !== null){
-        if (title.trim() ==='') {
-          alert('笔记本名不能为空');
-          return;
-        }else{
-          Notebooks.addNotebook({title})
-            .then(res => {
-              res.data!.beatifyCreatedAt = beautifyDate(res.data!.createdAt);
-              this.notebooksList.push(res.data!);
-              alert(res.msg);
-            }).catch(res=>{
-              alert(res.msg)
-          });
-        }
-      }
+      this.$prompt('输入笔记本标题', '创建笔记本', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^.{1,30}$/,
+        inputErrorMessage: '标题不能为空，且不超过30个字符'
+      }).then(res => {
+        const value = (res as MessageBoxInputData).value;
+        return Notebooks.addNotebook({title: value});
+      }).then(res => {
+        res.data!.beatifyCreatedAt = beautifyDate(res.data!.createdAt);
+        this.notebooksList.push(res.data!);
+        this.$message({
+          type: 'success',
+          message: res.msg
+        });
+      }).catch((res) => {
+        this.$message({
+          type: 'error',
+          message: res.msg
+        });
+      });
     }
     
     onEdit(notebook:NotebooksListBaseData) {
-      console.log('edit here');
-      let title = window.prompt('修改标题', notebook.title);
-      if(title !==null){
-        if(title.trim() === ''){
-          alert('笔记本名不能为空')
-          return
-        }else {
-          Notebooks.updateNotebooks(notebook.id, {title})
-            .then(res => {
-              notebook.title= title!;
-              alert(res.msg);
-            })
-        }
-      }
+      let newTitle = '';
+      this.$prompt('输入新笔记本标题', '修改笔记本', {
+        inputValue: notebook.title,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^.{1,30}$/,
+        inputErrorMessage: '标题不能为空，且不超过30个字符'
+      }).then(res => {
+        newTitle = (res as MessageBoxInputData).value;
+        return Notebooks.updateNotebooks(notebook.id, {title: newTitle});
+      }).then(res => {
+        notebook.title = newTitle;
+        this.$message({
+          type: 'success',
+          message: res.msg
+        });
+      }).catch((res) => {
+        console.log(res);
+      });
     }
     
     onDelete(notebook:NotebooksListBaseData) {
-      let isConfirm = window.prompt('你确定要删除吗');
-      if (isConfirm) {//这里有问题，等那个ui组件优化把
-        Notebooks.deleteNotebook(notebook.id)
-        .then((res=>{
-          this.notebooksList.splice(this.notebooksList.indexOf(notebook),1)
-          console.log(res);
-          alert(res.msg)
-        }))
-      }
+      this.$confirm('确认要删除笔记本吗', '删除笔记本', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return Notebooks.deleteNotebook(notebook.id);
+      }).then((res => {
+        this.notebooksList.splice(this.notebooksList.indexOf(notebook), 1);
+        this.$message({
+          type: 'success',
+          message: '删除成功！'
+        });
+      })).catch((res) => {
+        if (res !== 'cancel') {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          });
+        }
+      });
     }
   }
 </script>

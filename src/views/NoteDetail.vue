@@ -1,6 +1,6 @@
 <template>
   <Layout class-prefix="notebookDetail">
-    {{msg}}
+    笔记本详情页
   </Layout>
 </template>
 
