@@ -2,13 +2,13 @@
   <div class="sidebar">
     <avatar/>
     <div class="nav">
-      <router-link to="/note/1" title="笔记页">
+      <router-link to="/note" title="笔记页" class=noteDetail>
         <Icon name="notebook"/>
       </router-link>
       <router-link to="/notebooks" title="笔记本">
         <Icon name="notebookList"/>
       </router-link>
-      <router-link to="/trash/1" title="回收站">
+      <router-link to="/trash" title="回收站">
         <Icon name="trash"/>
       </router-link>
       <div class="helper"></div>
@@ -19,7 +19,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component} from 'vue-property-decorator';
+  import {Component,Prop} from 'vue-property-decorator';
   import Icon from '@/components/Icon.vue';
   import auth from '@/lib/apis/auth'
   import Avatar from '@/components/Avatar.vue';

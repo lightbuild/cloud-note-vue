@@ -29,12 +29,13 @@ const routes: Array<RouteConfig> = [
     component:NotebookList
   },
   {
-    path:'/note/:noteId',
+    path:'/note',
     name:'note',
     component:NoteDetail
   },
   {
-    path:'/trash/:noteId',
+    path:'/trash',
+    name:'trash',
     component:TrashDetail
   }
 ]

@@ -1,6 +1,6 @@
 <template>
   <layout class-prefix="trashDetail">
-    {{msg}}
+    <h1>noteId:{{$route.query.noteId}}</h1>
   </layout>
 </template>
 
