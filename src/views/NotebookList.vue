@@ -8,16 +8,16 @@
     </header>
     <main>
       <div class="main-wrapper">
-        <h3>笔记本列表  {{ notebooksList.length}}</h3>
+        <h3>笔记本列表 {{ notebooksList.length }}</h3>
         <div class="book-list">
           <router-link v-for="notebook of notebooksList" :key="notebook.id"
                        :to="{name:'note',params:{noteId:`${notebook.id}`}}" class="notebook">
             <div>
               <span class="icon-notebook"><Icon name="notebook"/></span>{{ notebook.title }}
-              <span>{{notebook.noteCounts}}</span>
+              <span>{{ notebook.noteCounts }}</span>
               <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>
               <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>
-              <span class="data">{{ notebook.beatifyCreatedAt}}</span>
+              <span class="data">{{ notebook.beatifyCreatedAt }}</span>
             </div>
           </router-link>
         </div>
@@ -35,13 +35,13 @@
   import Notebooks from '@/lib/apis/notebookList';
   import beautifyDate from '@/lib/helper/beautifyDate';
   import {MessageBoxInputData} from 'element-ui/types/message-box';
-
+  
   @Component({
     components: {Icon, Layout}
   })
   export default class NotebookList extends Vue {
     notebooksList: NotebooksListBaseData[] = [];
-
+    
     created() {
       auth.getInfo().then(res => {
         if (!res.isLogin) {
@@ -67,19 +67,11 @@
       }).then(res => {
         res.data!.beatifyCreatedAt = beautifyDate(res.data!.createdAt);
         this.notebooksList.push(res.data!);
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      }).catch((res) => {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
+        this.$message.success(res.msg);
       });
     }
     
-    onEdit(notebook:NotebooksListBaseData) {
+    onEdit(notebook: NotebooksListBaseData) {
       let newTitle = '';
       this.$prompt('输入新笔记本标题', '修改笔记本', {
         inputValue: notebook.title,
@@ -92,16 +84,11 @@
         return Notebooks.updateNotebooks(notebook.id, {title: newTitle});
       }).then(res => {
         notebook.title = newTitle;
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      }).catch((res) => {
-        console.log(res);
+        this.$message.success(res.msg);
       });
     }
     
-    onDelete(notebook:NotebooksListBaseData) {
+    onDelete(notebook: NotebooksListBaseData) {
       this.$confirm('确认要删除笔记本吗', '删除笔记本', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -110,18 +97,8 @@
         return Notebooks.deleteNotebook(notebook.id);
       }).then((res => {
         this.notebooksList.splice(this.notebooksList.indexOf(notebook), 1);
-        this.$message({
-          type: 'success',
-          message: '删除成功！'
-        });
-      })).catch((res) => {
-        if (res !== 'cancel') {
-          this.$message({
-            type: 'error',
-            message: res.msg
-          });
-        }
-      });
+        this.$message.success('删除成功');
+      }));
     }
   }
 </script>
