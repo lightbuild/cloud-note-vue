@@ -47,9 +47,8 @@
     created() {
       notebookList.getAll()
         .then(res => {
-          console.log(res.data);
           this.notebooks = res.data!;
-          this.curBook = this.notebooks.find(notebook => notebook.id.toString() === this.$route.query.notebookId) || this.notebooks[0];
+          this.curBook = this.notebooks.find(notebook => notebook.id.toString() === this.$route.query.notebookId) || this.notebooks[0] || {};
           return note.getAll({notebookId: this.curBook.id.toString()});
         }).then(res => {
         this.notes = res.data!;
@@ -57,8 +56,15 @@
       
     }
     
-    onCommand() {
-      console.log('notebook');
+    onCommand(notebookId:any) {
+      if(notebookId === 'trash'){
+         return this.$router.push({path:'/trash'})
+      }
+      console.log(notebookId);
+      note.getAll({notebookId})
+            .then(res=>{
+              this.notes = res.data!
+            })
     }
     
     addNote() {
