@@ -32,13 +32,13 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  import Icon from '@/components/Icon.vue';
+  import myIcon from '@/components/MyIcon.vue';
   import Layout from '@/components/Layout.vue';
   import auth from '@/lib/apis/auth';
   import Bus from '@/lib/helper/Bus';
   
   @Component({
-    components: {Layout, Icon}
+    components: {Layout, Icon: myIcon}
   })
   export default class Login extends Vue {
     user: UserData = {

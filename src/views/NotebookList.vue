@@ -2,7 +2,7 @@
   <layout class-prefix="notebookList">
     <header>
       <a href="#" class="btn" @click.prevent="onCreate">
-        <Icon name="add"/>
+        <my-icon name="add"/>
         <span>新建笔记本</span>
       </a>
     </header>
@@ -31,13 +31,14 @@
   import {Component} from 'vue-property-decorator';
   import Layout from '@/components/Layout.vue';
   import auth from '@/lib/apis/auth';
-  import Icon from '@/components/Icon.vue';
+  import myIcon from '@/components/MyIcon.vue';
   import Notebooks from '@/lib/apis/notebookList';
   import beautifyDate from '@/lib/helper/beautifyDate';
   import {MessageBoxInputData} from 'element-ui/types/message-box';
+  import MyIcon from '@/components/MyIcon.vue';
   
   @Component({
-    components: {Icon, Layout}
+    components: {MyIcon, Icon: myIcon, Layout}
   })
   export default class NotebookList extends Vue {
     notebooksList: NotebooksListBaseData[] = [];

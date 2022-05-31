@@ -10,7 +10,7 @@
   let importAll = (requireContext: __WebpackModuleApi.RequireContext) => requireContext.keys().forEach(requireContext);
   try {importAll(require.context('../assets/icons', true, /\.svg$/));} catch (error) {console.log(error);}
   @Component
-  export default class Icon extends Vue {
+  export default class myIcon extends Vue {
     @Prop(String) name:string | undefined
   }
 </script>

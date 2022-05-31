@@ -3,16 +3,16 @@
     <avatar/>
     <div class="nav">
       <router-link to="/note" title="笔记页" class=noteDetail>
-        <Icon name="notebook"/>
+        <my-icon name="notebook"/>
       </router-link>
       <router-link to="/notebooks" title="笔记本">
-        <Icon name="notebookList"/>
+        <my-icon name="notebookList"/>
       </router-link>
       <router-link to="/trash" title="回收站">
         <Icon name="trash"/>
       </router-link>
       <div class="helper"></div>
-      <Icon class="login-out" name="loginOut" @click="onLogout"/>
+      <my-icon class="login-out" name="loginOut" @click="onLogout"/>
     </div>
   </div>
 </template>
@@ -20,12 +20,13 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component,Prop} from 'vue-property-decorator';
-  import Icon from '@/components/Icon.vue';
+  import myIcon from '@/components/MyIcon.vue';
   import auth from '@/lib/apis/auth'
   import Avatar from '@/components/Avatar.vue';
+  import MyIcon from '@/components/MyIcon.vue';
   
   @Component({
-    components: {Avatar, Icon}
+    components: {MyIcon, Avatar, Icon: myIcon}
   })
   export default class Sidebar extends Vue {
     onLogout() {

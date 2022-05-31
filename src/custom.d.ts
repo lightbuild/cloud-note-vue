@@ -1,5 +1,3 @@
-
-
 interface UserItem {
   username: string,
   password: string,
@@ -46,7 +44,7 @@ type NotebooksListBaseData = {
   title: string,
   userId: number,
   createdAt: string,
-  updatedAt: string
+  updatedAt: string,
   beatifyCreatedAt?:string
 }
 
@@ -60,7 +58,7 @@ interface NotebooksModifyData {
   data?:NotebooksListBaseData
 }
 
-type NotebooksBaseData = {
+type NoteBaseData = {
   isDelete:boolean,
   id:number,
   title:string,
@@ -69,20 +67,21 @@ type NotebooksBaseData = {
   updatedAt:string,
   createdAt:string,
   beatifyCreatedAt?:string
+  beatifyUpdateAt?:string
 }
 
-interface NotebooksData {
-  msg:string,
-  data?:NotebooksBaseData[]
+interface NoteData {
+  msg?:string
+  data?:NoteBaseData[]
 }
 
-interface NotebookModifyData {
+interface NoteModifyData {
   msg: string,
-  data?: NotebooksBaseData
+  data?: NoteBaseData
 }
 
 
 interface TrashData {
   msg:string,
-  data?:NotebooksBaseData[]
+  data?:NoteBaseData[]
 }
