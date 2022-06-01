@@ -40,6 +40,7 @@
     components: {MyIcon}
   })
   export default class NoteSideBar extends Vue {
+    
     notebooks: NotebooksListBaseData[] = [];
     notes: NoteBaseData[] = [];
     curBook = {} as NotebooksListBaseData;
