@@ -34,7 +34,7 @@ export default {
   },
   addNotebook({notebookId}: { notebookId: string }, {title = '', content = ''} = {}) {
     return new Promise<NoteModifyData>((resolve, reject) => {
-      request<NoteModifyData>(URL.ADD.replace(':notebookId', notebookId))
+      request<NoteModifyData>(URL.ADD.replace(':notebookId', notebookId),'POST',{title,content})
         .then(res => {
           res.data!.beatifyCreatedAt = beautifyDate(res.data?.createdAt);
           res.data!.beatifyUpdateAt = beautifyDate(res.data?.updatedAt);

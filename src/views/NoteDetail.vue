@@ -1,8 +1,7 @@
 <template>
   <Layout class-prefix="notebookDetail">
-    <NoteSidebar id="note"></NoteSidebar>
-    <h1>notebookId:{{$route.query.notebookId}}</h1>
-    <h1>noteId:{{$route.query.noteId}}</h1>
+    <NoteSidebar></NoteSidebar>
+    <NoteContent></NoteContent>
   </Layout>
 </template>
 
@@ -11,10 +10,11 @@
   import {Component} from 'vue-property-decorator';
   import Layout from '@/components/Layout.vue';
   import auth from '@/lib/apis/auth';
-  import NoteSidebar from '@/components/NoteSidebar.vue';
+  import NoteSidebar from '@/components/NoteDetail/NoteSidebar.vue';
+  import NoteContent from '@/components/NoteDetail/NoteContent.vue';
   
   @Component({
-    components: {NoteSidebar, Layout}
+    components: {NoteContent, NoteSidebar, Layout}
   })
   export default class NoteDetail extends Vue {
     created() {
@@ -40,8 +40,5 @@
   }
   ::v-deep .content{
     display: flex;
-  }
-  #note{
-  
   }
 </style>
