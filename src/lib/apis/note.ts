@@ -33,14 +33,11 @@ export default {
     return request<NoteModifyData>(URL.DELETE.replace(':noteId', noteId), 'DELETE');
   },
   addNotebook({notebookId}: { notebookId: string }, {title = '', content = ''} = {}) {
-    return new Promise<NoteData>((resolve, reject) => {
-      request<NoteData>(URL.ADD.replace(':notebookId', notebookId))
+    return new Promise<NoteModifyData>((resolve, reject) => {
+      request<NoteModifyData>(URL.ADD.replace(':notebookId', notebookId))
         .then(res => {
-          res.data = res.data!.map(note => {
-            note.beatifyCreatedAt = beautifyDate(note.createdAt);
-            note.beatifyUpdateAt = beautifyDate(note.updatedAt);
-            return note;
-          });
+          res.data!.beatifyCreatedAt = beautifyDate(res.data?.createdAt);
+          res.data!.beatifyUpdateAt = beautifyDate(res.data?.updatedAt);
           resolve(res);
         }).catch(err => {
         reject(err.msg);

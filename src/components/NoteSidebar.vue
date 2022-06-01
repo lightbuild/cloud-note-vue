@@ -60,7 +60,7 @@
       if(notebookId === 'trash'){
          return this.$router.push({path:'/trash'})
       }
-      console.log(notebookId);
+      this.curBook = this.notebooks.find(notebook => notebook.id === notebookId)!
       note.getAll({notebookId})
             .then(res=>{
               this.notes = res.data!
@@ -68,7 +68,11 @@
     }
     
     addNote() {
-      console.log('新增笔记本');
+      const id = this.curBook.id.toString()
+      note.addNotebook({notebookId:id})
+        .then(res=>{
+          this.notes.unshift(res.data!)
+        })
     }
   }
 </script>
