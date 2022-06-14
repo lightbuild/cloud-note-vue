@@ -36,33 +36,3 @@ export default function request<ResponseType>(url: string, type = 'GET', data = 
 }
 
 
-/*
-使用async关键字的用法，感觉可以水一篇文章了
-async function test<T>(url: string, type = 'GET', data = {}) {
-  const config: AxiosRequestConfig = {
-    url,
-    method: type,
-    data,
-    validateStatus(status: number) {
-      return (status >= 200 && status < 300) || status === 400;
-    }
-  };
-  if (type.toLowerCase() === 'get') {
-    config.params = data;
-  } else {
-    config.data = data;
-  }
-  return axios.request<T>(config).then(res => {
-    if (res.status === 200) {
-      return res.data;
-    } else {
-      return res.data;
-    }
-  });
-}
-
-function testApi({username, password}: any) {
-  return test<RegisterData>('/test', 'POST', {username, password});
-}
-*/
-

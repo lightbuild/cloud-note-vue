@@ -6,16 +6,16 @@ const URL = {
   GET_INFO:'/auth'
 }
 export default {
-  register({username,password}:userInput):Promise<RegisterResponse>{
-    return request(URL.REGISTER,'POST',{username,password})
+  register({username,password}:userInput){
+    return request<RegisterResponse>(URL.REGISTER,'POST',{username,password})
   },
-  login({username,password}:userInput):Promise<LoginResponse>{
-    return request(URL.LOGIN,'POST',{username,password})
+  login({username,password}:userInput){
+    return request<LoginResponse>(URL.LOGIN,'POST',{username,password})
   },
-  logout():Promise<LogoutResponse>{
-    return request(URL.LOGOUT)
+  logout(){
+    return request<LogoutResponse>(URL.LOGOUT)
   },
-  getInfo():Promise<AuthResponse>{
-    return request(URL.GET_INFO)
+  getInfo(){
+    return request<AuthResponse>(URL.GET_INFO)
   }
 }

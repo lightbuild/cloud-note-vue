@@ -13,20 +13,16 @@
     user = {
       username:'未登录'
     }
-    get slug(){
-      return this.user.username.charAt(0)
-    }
-    created(){
-      Bus.$on('userInfo',(user:{username:string}) =>{
-        this.user.username = user.username
-      })
-      
-      auth.getInfo().then(res => {
-        if(res.isLogin){
-          this.user.username = res.data!.username;
-        }
-      })
-    }
+    // get slug(){
+    //   return this.user.username.charAt(0)
+    // }
+    // created(){
+    //   auth.getInfo().then(res => {
+    //     if(res.isLogin){
+    //       this.user.username = res.data!.username;
+    //     }
+    //   })
+    // }
   }
 </script>
 

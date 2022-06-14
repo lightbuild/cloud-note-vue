@@ -1,8 +1,9 @@
 import {Action, Module, Mutation, VuexModule} from 'vuex-module-decorators';
+import store from '@/store'
 import router from '@/router';
 import Auth from '@/lib/apis/auth';
 type User = UserBaseData | null
-@Module
+@Module({ dynamic: true, store, name: 'user' })
 export default class user extends VuexModule {
   user :User = null;
   get username() :string{
@@ -13,28 +14,30 @@ export default class user extends VuexModule {
   }
 
   @Mutation
-  setUser(newUser:UserBaseData){
+  setUser(newUser:UserBaseData):void{
     this.user = newUser;
   }
 
   @Action
   login({username,password}:userInput){
-    Auth.login({username,password}).then(res =>{
+   return Auth.login({username,password})
+     .then(res =>{
       this.context.commit('setUser',res.data)
     })
   }
   @Action
   register({username,password}:userInput){
-    Auth.register({username,password}).then(res =>{
+    return Auth.register({username,password})
+      .then(res =>{
       this.context.commit('setUser',res.data)
     })
   }
   @Action
   checklogin(){
-    Auth.getInfo().then(res =>{
+    return Auth.getInfo().then(res =>{
       if(!res.isLogin){
         console.log('jump');
-        router.push('login')
+        router.push('/login')
       }else{
         this.context.commit('setUser',res.data)
       }

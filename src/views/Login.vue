@@ -6,20 +6,20 @@
         <div class="form">
           <h3 @click="showRegister">创建账户</h3>
           <transition name="slide">
-            <div :class="{show: user.isShowRegister}" class="register">
-              <input type="text" v-model="user.register.username" placeholder="用户名">
-              <input type="password" v-model="user.register.password" placeholder="密码">
+            <div :class="{show: userInfo.isShowRegister}" class="register">
+              <input type="text" v-model="userInfo.register.username" placeholder="用户名">
+              <input type="password" v-model="userInfo.register.password" placeholder="密码">
               <div class="button" @click="onRegister">创建账号</div>
-              <p :class="{error:user.register.isError}">{{ user.register.notice }}</p>
+              <p :class="{error:userInfo.register.isError}">{{ userInfo.register.notice }}</p>
             </div>
           </transition>
           <h3 @click="showLogin">登录</h3>
           <transition name="slide">
-            <div :class="{show:user.isShowLogin}" class="login">
-              <input type="text" v-model="user.login.username" placeholder="输入用户名">
-              <input type="password" v-model="user.login.password" placeholder="密码">
+            <div :class="{show:userInfo.isShowLogin}" class="login">
+              <input type="text" v-model="userInfo.login.username" placeholder="输入用户名">
+              <input type="password" v-model="userInfo.login.password" placeholder="密码">
               <div class="button" @click="onLogin">登录</div>
-              <p :class="{error:user.login.isError}">{{ user.login.notice }}</p>
+              <p :class="{error:userInfo.login.isError}">{{ userInfo.login.notice }}</p>
             </div>
           </transition>
         </div>
@@ -34,13 +34,9 @@
   import {Component} from 'vue-property-decorator';
   import myIcon from '@/components/MyIcon.vue';
   import Layout from '@/components/Layout.vue';
-  import auth from '@/lib/apis/auth';
-  import { getModule } from 'vuex-module-decorators'
+  import {getModule} from 'vuex-module-decorators';
   import user from '@/store/modules/user';
-  
   const userModule = getModule(user);
-  
-  const userState = userModule.user
   
   type UserInfo = {
     isShowLogin: boolean,
@@ -52,7 +48,8 @@
     components: {Layout, Icon: myIcon}
   })
   export default class Login extends Vue {
-    user: UserInfo = {
+    
+    userInfo: UserInfo = {
       isShowLogin: true,
       isShowRegister: false,
       login: {
@@ -69,63 +66,62 @@
       }
     };
     
-    showRegister(){
-      this.user.isShowLogin = false;
-      this.user.isShowRegister = true;
+    showRegister() {
+      this.userInfo.isShowLogin = false;
+      this.userInfo.isShowRegister = true;
     }
     
-    showLogin(){
-      this.user.isShowLogin = true;
-      this.user.isShowRegister = false;
+    showLogin() {
+      this.userInfo.isShowLogin = true;
+      this.userInfo.isShowRegister = false;
     }
     
-    onRegister(){
-      if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.register.username)) {
-        this.user.register.isError = true;
-        this.user.register.notice = '用户名3~15个字符，仅限于字母数字下划线中文';
+    onRegister() {
+      if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.userInfo.register.username)) {
+        this.userInfo.register.isError = true;
+        this.userInfo.register.notice = '用户名3~15个字符，仅限于字母数字下划线中文';
         return;
       }
-      if (!/^.{6,16}$/.test(this.user.register.password)) {
-        this.user.register.isError = true;
-        this.user.register.notice = '密码长度为6~16个字符';
+      if (!/^.{6,16}$/.test(this.userInfo.register.password)) {
+        this.userInfo.register.isError = true;
+        this.userInfo.register.notice = '密码长度为6~16个字符';
         return;
       }
-      auth.register({
-        username: this.user.register.username,
-        password: this.user.register.password
-      }).then(data => {
-        this.user.register.isError = false;
-        this.user.register.notice = '';
-        Bus.$emit('userInfo', {username: this.user.login.username});
-        this.$router.push({path: 'notebooks'});
+      
+      userModule.register({
+        username: this.userInfo.register.username,
+        password: this.userInfo.register.password
+      }).then(res => {
+        this.userInfo.register.isError = false;
+        this.userInfo.register.notice ='';
+        this.$router.push({path: 'notebooks'})
       }).catch(data => {
-        this.user.register.isError = true;
-        this.user.register.notice = data.msg;
+        this.userInfo.register.isError = true;
+        this.userInfo.register.notice = data.msg;
       });
     }
     
-    onLogin(){
-      if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.user.login.username)) {
-        this.user.login.isError = true;
-        this.user.login.notice = '用户名3~15个字符，仅限于字母数字下划线中文';
+    onLogin() {
+      if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.userInfo.login.username)) {
+        this.userInfo.login.isError = true;
+        this.userInfo.login.notice = '用户名3~15个字符，仅限于字母数字下划线中文';
         return;
       }
-      if (!/^.{6,16}$/.test(this.user.login.password)) {
-        this.user.login.isError = true;
-        this.user.login.notice = '密码长度为6~16个字符';
+      if (!/^.{6,16}$/.test(this.userInfo.login.password)) {
+        this.userInfo.login.isError = true;
+        this.userInfo.login.notice = '密码长度为6~16个字符';
         return;
       }
-      auth.login({
-        username: this.user.login.username,
-        password: this.user.login.password
-      }).then(data => {
-        this.user.login.isError = false;
-        this.user.login.notice = '';
-        Bus.$emit('userInfo', {username: this.user.login.username});
+      userModule.login({
+        username: this.userInfo.login.username,
+        password: this.userInfo.login.password
+      }).then(res => {
+        this.userInfo.login.isError = false;
+        this.userInfo.login.notice = '';
         this.$router.push({path: 'notebooks'});
       }).catch(data => {
-        this.user.login.isError = true;
-        this.user.login.notice = data.msg;
+        this.userInfo.login.isError = true;
+        this.userInfo.login.notice = data.msg;
       });
     }
   }
