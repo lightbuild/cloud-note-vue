@@ -1,5 +1,4 @@
 import request from '@/lib/helper/require';
-
 const URL = {
   REGISTER :'/auth/register',
   LOGIN: '/auth/login',
@@ -7,16 +6,16 @@ const URL = {
   GET_INFO:'/auth'
 }
 export default {
-  register({username,password}:any){
-    return request<RegisterData>(URL.REGISTER,'POST',{username,password})
+  register({username,password}:userInput):Promise<RegisterResponse>{
+    return request(URL.REGISTER,'POST',{username,password})
   },
-  login({username,password}:any){
-    return request<AuthLoginData>(URL.LOGIN,'POST',{username,password})
+  login({username,password}:userInput):Promise<LoginResponse>{
+    return request(URL.LOGIN,'POST',{username,password})
   },
-  logout(){
-    return request<AuthLogoutData>(URL.LOGOUT)
+  logout():Promise<LogoutResponse>{
+    return request(URL.LOGOUT)
   },
-  getInfo(){
-    return request<AuthData>(URL.GET_INFO)
+  getInfo():Promise<AuthResponse>{
+    return request(URL.GET_INFO)
   }
 }

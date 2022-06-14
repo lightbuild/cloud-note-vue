@@ -35,13 +35,24 @@
   import myIcon from '@/components/MyIcon.vue';
   import Layout from '@/components/Layout.vue';
   import auth from '@/lib/apis/auth';
-  import Bus from '@/lib/helper/Bus';
+  import { getModule } from 'vuex-module-decorators'
+  import user from '@/store/modules/user';
   
+  const userModule = getModule(user);
+  
+  const userState = userModule.user
+  
+  type UserInfo = {
+    isShowLogin: boolean,
+    isShowRegister: boolean,
+    login: UserItem,
+    register: UserItem,
+  }
   @Component({
     components: {Layout, Icon: myIcon}
   })
   export default class Login extends Vue {
-    user: UserData = {
+    user: UserInfo = {
       isShowLogin: true,
       isShowRegister: false,
       login: {

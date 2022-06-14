@@ -1,44 +1,43 @@
-interface UserItem {
+type UserItem = {
   username: string,
   password: string,
   notice: string,
   isError: boolean
 }
-
-interface UserData {
-  isShowLogin: boolean,
-  isShowRegister: boolean,
-  login: UserItem,
-  register: UserItem,
+type userInput = {
+  username: string,
+  password: string
 }
 
-type BaseData = {
+type UserBaseData = {
   id: number,
   username: string,
   updatedAt: string,
   createdAt: string
 }
 
-interface RegisterData {
+interface RegisterResponse {
   msg: string,
-  data?: BaseData
+  data?: UserBaseData
 }
 
-interface AuthData {
+interface LoginResponse {
+  msg: string,
+  data?: UserBaseData
+}
+
+interface AuthResponse {
   isLogin: boolean,
-  data?: BaseData
+  data?: UserBaseData
 }
 
-interface AuthLogoutData {
+interface LogoutResponse {
   msg: string;
 }
 
-interface AuthLoginData {
-  msg: string,
-  data?: BaseData
-}
 
-type NotebooksListBaseData = {
+
+type NListBaseData = {
   id: number,
   noteCounts:number,
   title: string,
@@ -48,14 +47,14 @@ type NotebooksListBaseData = {
   beatifyCreatedAt?:string
 }
 
-interface NotebooksListData {
+interface NListResponse {
   msg: string,
-  data?: NotebooksListBaseData[]
+  data?: NListBaseData[]
 }
 
 interface NotebooksModifyData {
   msg:string,
-  data?:NotebooksListBaseData
+  data?:NListBaseData
 }
 
 type NoteBaseData = {
@@ -70,18 +69,18 @@ type NoteBaseData = {
   beatifyUpdateAt?:string
 }
 
-interface NoteData {
+interface NoteResponse {
   msg?:string
   data?:NoteBaseData[]
 }
 
-interface NoteModifyData {
+interface NoteModifyResponse {
   msg: string,
   data?: NoteBaseData
 }
 
 
-interface TrashData {
+interface TrashResponse {
   msg:string,
   data?:NoteBaseData[]
 }
