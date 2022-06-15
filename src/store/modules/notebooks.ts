@@ -1,7 +1,6 @@
-import {Action, getModule, Module, Mutation, VuexModule,MutationAction} from 'vuex-module-decorators';
+import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators';
 import store from '@/store'
 import NotebookList from '@/lib/apis/notebookList';
-import note from '@/lib/apis/note';
 import {Message} from 'element-ui';
 
 
@@ -61,11 +60,17 @@ class Notebooks extends VuexModule {
       Message.success(res.msg)
     })
   }
-  @Action
-  updateNotebook(notebookId:number,title:{title:string}){
-    return NotebookList.updateNotebooks(notebookId,title).then(res =>{
-      this.context.commit('updateNotebooksM',res.data)
-      Message.success(res.msg)
+  @Action({rawError: true})
+  updateNotebook(notebookId:number,newTitle:string){
+    console.log(notebookId);
+    console.log('action');
+    console.log(newTitle);
+    console.log({title:newTitle});
+    return NotebookList.updateNotebooks(notebookId,{title:newTitle}).then(res =>{
+      console.log('触发了module');
+      console.log(res);
+      // this.context.commit('updateNotebooksM',res.data)
+      // Message.success(res.msg)
     })
   }
 }

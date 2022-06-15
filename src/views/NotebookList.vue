@@ -32,18 +32,18 @@
   import {Component} from 'vue-property-decorator';
   import Layout from '@/components/Layout.vue';
   import myIcon from '@/components/MyIcon.vue';
-  import beautifyDate from '@/lib/helper/beautifyDate';
   import {MessageBoxInputData} from 'element-ui/types/message-box';
   import MyIcon from '@/components/MyIcon.vue';
   import UserModule from '@/store/modules/user';
   import NotebooksModule from '@/store/modules/notebooks';
-  
+
   @Component({
     components: {MyIcon, Icon: myIcon, Layout}
   })
   export default class NotebookList extends Vue {
-    notebooksList = NotebooksModule.notebooks
-    
+    get notebooksList() {
+      return NotebooksModule.notebooks
+    }
     created() {
       UserModule.checkLogin().then(res =>{
         if(!res.isLogin){
@@ -75,7 +75,8 @@
         inputErrorMessage: '标题不能为空，且不超过30个字符'
       }).then(res => {
         newTitle = (res as MessageBoxInputData).value;
-        NotebooksModule.updateNotebook(notebook.id, {title: newTitle});
+        console.log(newTitle);
+        NotebooksModule.updateNotebook(notebook.id,'hahahah');
       })
     }
     
