@@ -1,10 +1,11 @@
-import {Action, Module, Mutation, VuexModule} from 'vuex-module-decorators';
+import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators';
 import store from '@/store'
 import router from '@/router';
 import Auth from '@/lib/apis/auth';
+
 type User = UserBaseData | null
 @Module({ dynamic: true, store, name: 'user' })
-export default class user extends VuexModule {
+class user extends VuexModule {
   user :User = null;
   get username() :string{
     return  this.user === null ? '未登录' : this.user.username
@@ -44,3 +45,7 @@ export default class user extends VuexModule {
     })
   }
 }
+
+
+const UserModule = getModule(user)
+export default UserModule

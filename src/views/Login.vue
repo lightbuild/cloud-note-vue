@@ -34,9 +34,7 @@
   import {Component} from 'vue-property-decorator';
   import myIcon from '@/components/MyIcon.vue';
   import Layout from '@/components/Layout.vue';
-  import {getModule} from 'vuex-module-decorators';
-  import user from '@/store/modules/user';
-  const userModule = getModule(user);
+  import UserModule from '@/store/modules/user';
   
   type UserInfo = {
     isShowLogin: boolean,
@@ -88,14 +86,16 @@
         return;
       }
       
-      userModule.register({
+      UserModule.register({
         username: this.userInfo.register.username,
         password: this.userInfo.register.password
       }).then(res => {
         this.userInfo.register.isError = false;
         this.userInfo.register.notice ='';
+        console.log('jump to notebooks');
         this.$router.push({path: 'notebooks'})
       }).catch(data => {
+        console.log('jump to error');
         this.userInfo.register.isError = true;
         this.userInfo.register.notice = data.msg;
       });
@@ -112,14 +112,16 @@
         this.userInfo.login.notice = '密码长度为6~16个字符';
         return;
       }
-      userModule.login({
+      UserModule.login({
         username: this.userInfo.login.username,
         password: this.userInfo.login.password
       }).then(res => {
         this.userInfo.login.isError = false;
         this.userInfo.login.notice = '';
         this.$router.push({path: 'notebooks'});
+        console.log('jump to notebook');
       }).catch(data => {
+        console.log('jump to error');
         this.userInfo.login.isError = true;
         this.userInfo.login.notice = data.msg;
       });

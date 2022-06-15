@@ -1,6 +1,7 @@
 <template>
   <layout class-prefix="notebookList">
-    <header>
+    <h3>新建笔记本</h3>
+<!--    <header>
       <a href="#" class="btn" @click.prevent="onCreate">
         <my-icon name="add"/>
         <span>新建笔记本</span>
@@ -22,7 +23,7 @@
           </router-link>
         </div>
       </div>
-    </main>
+    </main>-->
   </layout>
 </template>
 
@@ -41,7 +42,7 @@
     components: {MyIcon, Icon: myIcon, Layout}
   })
   export default class NotebookList extends Vue {
-    notebooksList: NotebooksListBaseData[] = [];
+   /* notebooksList: NotebooksListBaseData[] = [];
     
     created() {
       auth.getInfo().then(res => {
@@ -100,7 +101,7 @@
         this.notebooksList.splice(this.notebooksList.indexOf(notebook), 1);
         this.$message.success('删除成功');
       }));
-    }
+    }*/
   }
 </script>
 

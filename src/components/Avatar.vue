@@ -1,5 +1,5 @@
 <template>
-  <span :title="user.username">{{slug}}</span>
+  <span :title="user.username">未</span>
 </template>
 
 <script lang="ts">
