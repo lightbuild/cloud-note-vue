@@ -92,10 +92,8 @@
       }).then(res => {
         this.userInfo.register.isError = false;
         this.userInfo.register.notice ='';
-        console.log('jump to notebooks');
         this.$router.push({path: 'notebooks'})
       }).catch(data => {
-        console.log('jump to error');
         this.userInfo.register.isError = true;
         this.userInfo.register.notice = data.msg;
       });
@@ -119,9 +117,7 @@
         this.userInfo.login.isError = false;
         this.userInfo.login.notice = '';
         this.$router.push({path: 'notebooks'});
-        console.log('jump to notebook');
       }).catch(data => {
-        console.log('jump to error');
         this.userInfo.login.isError = true;
         this.userInfo.login.notice = data.msg;
       });

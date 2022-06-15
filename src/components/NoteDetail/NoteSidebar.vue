@@ -41,9 +41,9 @@
   })
   export default class NoteSideBar extends Vue {
     
-    notebooks: NotebooksListBaseData[] = [];
+    notebooks: NListBaseData[] = [];
     notes: NoteBaseData[] = [];
-    curBook = {} as NotebooksListBaseData;
+    curBook = {} as NListBaseData;
     
     created() {
       notebookList.getAll()

@@ -10,8 +10,8 @@ const URL = {
 
 export default {
   getAll({notebookId}: { notebookId: string }) {
-    return new Promise<NoteData>((resolve, reject) => {
-      request<NoteData>(URL.GET.replace(':notebookId', notebookId))
+    return new Promise<NoteResponse>((resolve, reject) => {
+      request<NoteResponse>(URL.GET.replace(':notebookId', notebookId))
         .then(res => {
           res.data = res.data!.map(note => {
             note.beatifyCreatedAt = beautifyDate(note.createdAt);
@@ -26,15 +26,15 @@ export default {
   },
 
   updateNotebooks({noteId}: { noteId: string }, {title, content}: { title: string, content: string }) {
-    return request<NoteModifyData>(URL.UPDATE.replace(':noteId', noteId), 'PATCH', {title, content});
+    return request<NoteModifyResponse>(URL.UPDATE.replace(':noteId', noteId), 'PATCH', {title, content});
   },
 
   deleteNotebook({noteId}: { noteId: string }) {
-    return request<NoteModifyData>(URL.DELETE.replace(':noteId', noteId), 'DELETE');
+    return request<NoteModifyResponse>(URL.DELETE.replace(':noteId', noteId), 'DELETE');
   },
   addNotebook({notebookId}: { notebookId: string }, {title = '', content = ''} = {}) {
-    return new Promise<NoteModifyData>((resolve, reject) => {
-      request<NoteModifyData>(URL.ADD.replace(':notebookId', notebookId),'POST',{title,content})
+    return new Promise<NoteModifyResponse>((resolve, reject) => {
+      request<NoteModifyResponse>(URL.ADD.replace(':notebookId', notebookId),'POST',{title,content})
         .then(res => {
           res.data!.beatifyCreatedAt = beautifyDate(res.data?.createdAt);
           res.data!.beatifyUpdateAt = beautifyDate(res.data?.updatedAt);

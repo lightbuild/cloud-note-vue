@@ -1,28 +1,20 @@
 <template>
-  <span :title="user.username">未</span>
+  <span :title="username">{{slug}}</span>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  import auth from '@/lib/apis/auth';
-  import Bus from '@/lib/helper/Bus';
+  import UserModule from '@/store/modules/user';
   
   @Component
   export default class Avatar extends Vue {
-    user = {
-      username:'未登录'
+    get username(){
+      return UserModule.username;
     }
-    // get slug(){
-    //   return this.user.username.charAt(0)
-    // }
-    // created(){
-    //   auth.getInfo().then(res => {
-    //     if(res.isLogin){
-    //       this.user.username = res.data!.username;
-    //     }
-    //   })
-    // }
+    get slug(){
+      return UserModule.slug;
+    }
   }
 </script>
 

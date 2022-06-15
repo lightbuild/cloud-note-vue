@@ -1,51 +1,51 @@
 import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators';
-import store from '@/store'
-import router from '@/router';
+import store from '@/store';
 import Auth from '@/lib/apis/auth';
 
-type User = UserBaseData | null
-@Module({ dynamic: true, store, name: 'user' })
-class user extends VuexModule {
-  user :User = null;
-  get username() :string{
-    return  this.user === null ? '未登录' : this.user.username
+@Module({dynamic: true, store, name: 'user'})
+class User extends VuexModule {
+  loginUser: UserBaseData|null = null;
+
+  get username(): string {
+    return this.loginUser === null ? '未登录' : this.loginUser.username;
   }
-  get slug():string{
-    return this.user === null ? '未':this.user.username[0];
+
+  get slug(): string {
+    return this.loginUser === null ? '未' : this.loginUser.username[0];
   }
 
   @Mutation
-  setUser(newUser:UserBaseData):void{
-    this.user = newUser;
+  setUser(newUser: UserBaseData): void {
+    this.loginUser = newUser;
   }
 
   @Action
-  login({username,password}:userInput){
-   return Auth.login({username,password})
-     .then(res =>{
-      this.context.commit('setUser',res.data)
-    })
+  login({username, password}: userInput) {
+    return Auth.login({username, password})
+      .then(res => {
+        this.context.commit('setUser', res.data);
+      });
   }
+
   @Action
-  register({username,password}:userInput){
-    return Auth.register({username,password})
-      .then(res =>{
-      this.context.commit('setUser',res.data)
-    })
+  register({username, password}: userInput) {
+    return Auth.register({username, password})
+      .then(res => {
+        this.context.commit('setUser', res.data);
+      });
   }
+
   @Action
-  checklogin(){
-    return Auth.getInfo().then(res =>{
-      if(!res.isLogin){
-        console.log('jump');
-        router.push('/login')
-      }else{
-        this.context.commit('setUser',res.data)
+  checkLogin() {
+    return Auth.getInfo().then(res => {
+      if(res.isLogin){
+        this.context.commit('setUser', res.data);
       }
-    })
+      return res
+    });
   }
 }
 
 
-const UserModule = getModule(user)
-export default UserModule
+const UserModule = getModule(User);
+export default UserModule;

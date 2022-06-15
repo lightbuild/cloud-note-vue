@@ -1,7 +1,7 @@
 <template>
   <layout class-prefix="notebookList">
-    <h3>新建笔记本</h3>
-<!--    <header>
+    <h3>新建</h3>
+    <header>
       <a href="#" class="btn" @click.prevent="onCreate">
         <my-icon name="add"/>
         <span>新建笔记本</span>
@@ -23,7 +23,7 @@
           </router-link>
         </div>
       </div>
-    </main>-->
+    </main>
   </layout>
 </template>
 
@@ -31,30 +31,26 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import Layout from '@/components/Layout.vue';
-  import auth from '@/lib/apis/auth';
   import myIcon from '@/components/MyIcon.vue';
-  import Notebooks from '@/lib/apis/notebookList';
   import beautifyDate from '@/lib/helper/beautifyDate';
   import {MessageBoxInputData} from 'element-ui/types/message-box';
   import MyIcon from '@/components/MyIcon.vue';
+  import UserModule from '@/store/modules/user';
+  import NotebooksModule from '@/store/modules/notebooks';
   
   @Component({
     components: {MyIcon, Icon: myIcon, Layout}
   })
   export default class NotebookList extends Vue {
-   /* notebooksList: NotebooksListBaseData[] = [];
+    notebooksList = NotebooksModule.notebooks
     
     created() {
-      auth.getInfo().then(res => {
-        if (!res.isLogin) {
-          this.$router.push({path: '/login'});
+      UserModule.checkLogin().then(res =>{
+        if(!res.isLogin){
+         return this.$router.push('login')
         }
-      });
-      Notebooks.getAll()
-        .then(res => {
-          this.notebooksList = res.data || [];
-          console.log(res);
-        });
+      })
+      NotebooksModule.getNotebooks()
     }
     
     onCreate() {
@@ -65,15 +61,11 @@
         inputErrorMessage: '标题不能为空，且不超过30个字符'
       }).then(res => {
         const value = (res as MessageBoxInputData).value;
-        return Notebooks.addNotebook({title: value});
-      }).then(res => {
-        res.data!.beatifyCreatedAt = beautifyDate(res.data!.createdAt);
-        this.notebooksList.push(res.data!);
-        this.$message.success(res.msg);
-      });
+        NotebooksModule.addNotebook({title:value});
+      })
     }
     
-    onEdit(notebook: NotebooksListBaseData) {
+    onEdit(notebook: NListBaseData) {
       let newTitle = '';
       this.$prompt('输入新笔记本标题', '修改笔记本', {
         inputValue: notebook.title,
@@ -83,25 +75,19 @@
         inputErrorMessage: '标题不能为空，且不超过30个字符'
       }).then(res => {
         newTitle = (res as MessageBoxInputData).value;
-        return Notebooks.updateNotebooks(notebook.id, {title: newTitle});
-      }).then(res => {
-        notebook.title = newTitle;
-        this.$message.success(res.msg);
-      });
+        NotebooksModule.updateNotebook(notebook.id, {title: newTitle});
+      })
     }
     
-    onDelete(notebook: NotebooksListBaseData) {
+    onDelete(notebook:NListBaseData ) {
       this.$confirm('确认要删除笔记本吗', '删除笔记本', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return Notebooks.deleteNotebook(notebook.id);
-      }).then((res => {
-        this.notebooksList.splice(this.notebooksList.indexOf(notebook), 1);
-        this.$message.success('删除成功');
-      }));
-    }*/
+        NotebooksModule.deleteNotebook(notebook.id);
+      })
+    }
   }
 </script>
 

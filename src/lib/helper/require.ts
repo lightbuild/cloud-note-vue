@@ -21,7 +21,7 @@ export default function request<ResponseType>(url: string, type = 'GET', data = 
     } else {
       config.data = data;
     }
-    axios.request(config).then(res => {
+    axios(config).then(res => {
       if (res.status === 200) {
         resolve(res.data);
       } else {
