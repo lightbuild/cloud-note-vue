@@ -32,9 +32,9 @@ export default {
   deleteNotebook({noteId}: { noteId: string }) {
     return request<NoteModifyResponse>(URL.DELETE.replace(':noteId', noteId), 'DELETE');
   },
-  addNotebook({notebookId}: { notebookId: string }, {title = '', content = ''} = {}) {
+  addNotebook({notebookId}: { notebookId: number }, {title = '', content = ''} = {}) {
     return new Promise<NoteModifyResponse>((resolve, reject) => {
-      request<NoteModifyResponse>(URL.ADD.replace(':notebookId', notebookId),'POST',{title,content})
+      request<NoteModifyResponse>(URL.ADD.replace(':notebookId', notebookId.toString()),'POST',{title,content})
         .then(res => {
           res.data!.beatifyCreatedAt = beautifyDate(res.data?.createdAt);
           res.data!.beatifyUpdateAt = beautifyDate(res.data?.updatedAt);

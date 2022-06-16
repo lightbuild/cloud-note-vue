@@ -2,7 +2,6 @@ import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decor
 import store from '@/store';
 import NotebookList from '@/lib/apis/notebookList';
 import {Message} from 'element-ui';
-import beautifyDate from '@/lib/helper/beautifyDate';
 
 
 @Module({dynamic: true, store, name: 'notebooks'})
@@ -10,10 +9,10 @@ class Notebooks extends VuexModule {
   notebooks: NListBaseData[] = [];
   bookId: number | null = null;
 
-  get curBookId() {
+  get curBook() {
     if (!Array.isArray(this.notebooks)) return {};
     if (!this.bookId) return this.notebooks[0] || {};
-    return this.notebooks.find(notebook => notebook.id == this.bookId);
+    return this.notebooks.find(item => item.id === this.bookId);
   }
 
   @Mutation
@@ -38,8 +37,8 @@ class Notebooks extends VuexModule {
   }
 
   @Mutation
-  setCurbookM(notebook: NListBaseData) {
-    this.bookId = notebook.id;
+  setCurbookM({notebookId}: { notebookId: string }) {
+     this.bookId = +notebookId;
   }
 
   @Action
@@ -53,7 +52,6 @@ class Notebooks extends VuexModule {
   @Action({rawError: true})
   addNotebook(title: { title: string }) {
     return NotebookList.addNotebook(title).then(res => {
-      res.data!.beatifyCreatedAt = beautifyDate(res.data!.createdAt);
       this.context.commit('addNotebookM', res.data);
       Message.success(res.msg);
     });

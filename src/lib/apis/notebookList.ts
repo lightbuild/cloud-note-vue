@@ -32,6 +32,14 @@ export default{
     return request<NotebooksModifyData>(URL.DELETE.replace(':id',notebookId.toString()),'DELETE')
   },
   addNotebook({title=''}={}){
-    return request<NotebooksModifyData>(URL.ADD,'POST',{title})
+    return new Promise<NotebooksModifyData>((resolve, reject) =>{
+        request<NotebooksModifyData>(URL.ADD,'POST',{title})
+          .then(res=>{
+              res.data!.beatifyCreatedAt = beautifyDate(res.data!.createdAt);
+              resolve(res);
+          }).catch(err => {
+            reject(err)
+        })
+    })
   }
 }

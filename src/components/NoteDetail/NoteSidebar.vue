@@ -17,14 +17,14 @@
       <div>更新时间</div>
       <div>标题</div>
     </div>
-    <ul class="notes">
-      <li v-for="note of notes" :key="note.id">
-        <router-link :to="`/note?noteId=${note.id}&notebookId=${curBook.id}`">
-          <span class="data">{{ note.beatifyUpdateAt }}</span>
-          <span class="title">{{ note.title }}</span>
-        </router-link>
-      </li>
-    </ul>
+        <ul class="notes">
+          <li v-for="note of notes" :key="note.id">
+            <router-link :to="`/note?noteId=${note.id}&notebookId=${curBook.id}`">
+              <span class="data">{{ note.beatifyUpdateAt }}</span>
+              <span class="title">{{ note.title }}</span>
+            </router-link>
+          </li>
+        </ul>
   </div>
 </template>
 
@@ -34,46 +34,52 @@
   import MyIcon from '@/components/MyIcon.vue';
   import notebookList from '@/lib/apis/notebookList';
   import note from '@/lib/apis/note';
-  
+  import NotebooksModule from '@/store/modules/notebooks';
+  import NoteModule from '@/store/modules/note';
   
   @Component({
     components: {MyIcon}
   })
   export default class NoteSideBar extends Vue {
+    get curBook() {
+      return NotebooksModule.curBook;
+    }
     
-    notebooks: NListBaseData[] = [];
-    notes: NoteBaseData[] = [];
-    curBook = {} as NListBaseData;
+    get notebooks() {
+      return NotebooksModule.notebooks;
+    }
+    
+    get notes() {
+      return NoteModule.noteList;
+    }
     
     created() {
-      notebookList.getAll()
+      NotebooksModule.getNotebooks()
         .then(res => {
-          this.notebooks = res.data!;
-          this.curBook = this.notebooks.find(notebook => notebook.id.toString() === this.$route.query.notebookId) || this.notebooks[0] || {};
-          return note.getAll({notebookId: this.curBook.id.toString()});
-        }).then(res => {
-        this.notes = res.data!;
-      });
+          NotebooksModule.setCurbookM(this.$route.query);
+        }).then(res=>{
+          NoteModule.setNote(this.curBook.id);
+      })
       
     }
     
-    onCommand(notebookId:any) {
-      if(notebookId === 'trash'){
-         return this.$router.push({path:'/trash'})
+    onCommand(notebookId: any) {
+      if (notebookId === 'trash') {
+        return this.$router.push({path: '/trash'});
       }
-      this.curBook = this.notebooks.find(notebook => notebook.id === notebookId)!
+      this.curBook = this.notebooks.find(notebook => notebook.id === notebookId)!;
       note.getAll({notebookId})
-            .then(res=>{
-              this.notes = res.data!
-            })
+        .then(res => {
+          this.notes = res.data!;
+        });
     }
     
     addNote() {
-      const id = this.curBook.id.toString()
-      note.addNotebook({notebookId:id})
-        .then(res=>{
-          this.notes.unshift(res.data!)
-        })
+      const id = this.curBook.id.toString();
+      note.addNotebook({notebookId: id})
+        .then(res => {
+          this.notes.unshift(res.data!);
+        });
     }
   }
 </script>
