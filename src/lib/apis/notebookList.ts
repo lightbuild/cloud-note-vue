@@ -25,7 +25,6 @@ export default{
   },
 
   updateNotebooks(notebookId:number,{title=''}={}){
-      console.log({title});
       return request<NotebooksModifyData>(URL.UPDATE.replace(':id',notebookId.toString()),'PATCH',{title})
   },
 

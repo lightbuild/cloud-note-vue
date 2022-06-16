@@ -66,7 +66,7 @@
     }
     
     onEdit(notebook: NListBaseData) {
-      let newTitle = '';
+      let inputTitle = '';
       this.$prompt('输入新笔记本标题', '修改笔记本', {
         inputValue: notebook.title,
         confirmButtonText: '确定',
@@ -74,9 +74,9 @@
         inputPattern: /^.{1,30}$/,
         inputErrorMessage: '标题不能为空，且不超过30个字符'
       }).then(res => {
-        newTitle = (res as MessageBoxInputData).value;
-        console.log(newTitle);
-        NotebooksModule.updateNotebook(notebook.id,'hahahah');
+        inputTitle = (res as MessageBoxInputData).value;
+        NotebooksModule.updateNotebook({notebookId:notebook.id,
+          newTitle:inputTitle});
       })
     }
     
