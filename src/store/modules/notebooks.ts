@@ -9,10 +9,10 @@ class Notebooks extends VuexModule {
   notebooks: NListBaseData[] = [];
   bookId: number | null = null;
 
-  get curBook() {
+  get curBook():{[key: string]: any}{
     if (!Array.isArray(this.notebooks)) return {};
     if (!this.bookId) return this.notebooks[0] || {};
-    return this.notebooks.find(item => item.id === this.bookId);
+    return this.notebooks.find(item => item.id === this.bookId) || {};
   }
 
   @Mutation
@@ -37,8 +37,8 @@ class Notebooks extends VuexModule {
   }
 
   @Mutation
-  setCurbookM({notebookId}: { notebookId: string }) {
-     this.bookId = +notebookId;
+  setCurbookM(notebookId: string) {
+    this.bookId = +notebookId;
   }
 
   @Action

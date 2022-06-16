@@ -21,7 +21,7 @@ class Notebooks extends VuexModule {
   @Mutation
   deleteNoteM(){}
 
-  @Action
+  @Action({rawError: true})
   setNote(curId:string){
     Note.getAll({notebookId:curId})
       .then(res=>{
@@ -29,7 +29,7 @@ class Notebooks extends VuexModule {
     })
   }
 
-  @Action
+  @Action({rawError: true})
   addNote({curId,newTitle,newContent}:{curId:number,newTitle:string,newContent:string}){
     Note.addNotebook({notebookId:curId},{title:newTitle,content:newContent})
       .then(res => {
@@ -37,9 +37,9 @@ class Notebooks extends VuexModule {
         Message.success(res.msg);
       })
   }
-  @Action
+  @Action({rawError: true})
   updateNote(){}
-  @Action
+  @Action({rawError: true})
   deleteNote(){}
 }
 
