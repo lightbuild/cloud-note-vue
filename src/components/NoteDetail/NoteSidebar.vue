@@ -32,8 +32,6 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import MyIcon from '@/components/MyIcon.vue';
-  import notebookList from '@/lib/apis/notebookList';
-  import note from '@/lib/apis/note';
   import NotebooksModule from '@/store/modules/notebooks';
   import NoteModule from '@/store/modules/note';
   
@@ -41,7 +39,7 @@
     components: {MyIcon}
   })
   export default class NoteSideBar extends Vue {
-    // curBook = NotebooksModule.curBook
+    
     get curBook() {
       return NotebooksModule.curBook;
     }
@@ -57,8 +55,8 @@
     created() {
       NotebooksModule.getNotebooks()
         .then(res => {
-          const curId = this.$route.query.notebookId as string;
-          NotebooksModule.setCurbookM(curId);
+          const curBookId = this.$route.query.notebookId as string;
+          NotebooksModule.setCurbookM(curBookId);
           NoteModule.setNote(this.curBook['id'])
         })
     }

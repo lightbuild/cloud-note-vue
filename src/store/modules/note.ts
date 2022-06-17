@@ -2,12 +2,17 @@ import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decor
 import store from '@/store';
 import Note from '@/lib/apis/note';
 import {Message} from 'element-ui';
-import notebooks from '@/store/modules/notebooks';
 
 @Module({dynamic: true, store, name: 'note'})
 class Notebooks extends VuexModule {
   noteList: NoteBaseData[] =[]
+  curNoteId:number|null = null;
 
+  get curNote():{[key: string]: any}{
+    if(!Array.isArray(this.noteList)) return {}
+    if(!this.curNoteId) return this.noteList[0] || {}
+    return this.noteList.find(item => item.id === this.curNoteId) || {}
+  }
   @Mutation
   setNoteM(notes:NoteBaseData[]){
     this.noteList = notes
@@ -20,6 +25,10 @@ class Notebooks extends VuexModule {
   updateNoteM(){}
   @Mutation
   deleteNoteM(){}
+  @Mutation
+  setCurNote({curNoteId}: { curNoteId: number }){
+    this.curNoteId= curNoteId
+  }
 
   @Action({rawError: true})
   setNote(curId:string){

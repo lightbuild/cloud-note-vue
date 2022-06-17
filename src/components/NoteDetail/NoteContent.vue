@@ -6,7 +6,7 @@
         <div class="note-status">
           <span>创建日期：10分钟前</span>
           <span>更新日期：2分钟前</span>
-          <span>{{statusText}}</span>
+          <span>{{ statusText }}</span>
         </div>
         <div class="icon-wrapper">
           <my-icon name="fullscreen" @click="isShowPreview=!isShowPreview"></my-icon>
@@ -14,11 +14,11 @@
         </div>
       </div>
       <div class="note-title">
-        <input type="text" value="curNote.title" @input="updateNote" placeholder="输入标题">
+        <input type="text" :value="curNote.title" @input="updateNote" placeholder="输入标题">
       </div>
       <div class="editor">
-        <textarea value="curNote.content" @input="updateNote" placeholder="输入内容，支持 Markdown 语法"></textarea>
-        <div class="preview markdown-body" v-html="previewContent" v-show="!isShowPreview"></div>
+        <textarea :value="curNote.content" @input="updateNote" placeholder="输入内容，支持markdown语法"></textarea>
+        <div class="preview markdown-body" v-show="!isShowPreview"></div>
       </div>
     </div>
   </div>
@@ -28,28 +28,29 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import MyIcon from '@/components/MyIcon.vue';
+  import NoteModule from '@/store/modules/note';
+  
   @Component({
     components: {MyIcon}
   })
   export default class NoteContent extends Vue {
-    curNote = {
-      id:1
-    } as NoteBaseData;
+    get curNote() {
+      return NoteModule.curNote;
+    }
+    
     notes: NoteBaseData[] = [];
-    statusText='笔记本未改动'
-    isShowPreview=false
+    statusText = '笔记本未改动';
+    isShowPreview = false;
     
+    get previewContent() {
+      return this.curNote.content || '';
+    }
     
-   
-      get previewContent(){
-        return this.curNote.content || ''
-      }
-  
-    deleteNote(){
+    deleteNote() {
       console.log('删除标题');
     }
     
-    updateNote(){
+    updateNote() {
       console.log('修改标题或内容');
     }
   }
@@ -57,36 +58,40 @@
 
 <style lang="scss" scoped>
   @import "~@/assets/style/helper.scss";
-  .note-detail{
+  
+  .note-detail {
     flex: 1;
     display: flex;
     flex-direction: column;
     
-    .note-empty{
+    .note-empty {
       font-size: 50px;
-      color:#ccc;
+      color: #ccc;
       text-align: center;
       margin-top: 100px;
     }
     
-    .note-detail-ct{
+    .note-detail-ct {
       min-height: 100%;
     }
     
-    .note-header{
+    .note-header {
       font-size: 12px;
       padding: 4px 20px;
       border-bottom: 1px solid #eee;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .note-status span{
+      
+      .note-status span {
         color: #999;
         margin-right: 4px;
       }
-      .icon-wrapper{
+      
+      .icon-wrapper {
         cursor: pointer;
-        .icon{
+        
+        .icon {
           color: #999;
           width: 1.5em;
           height: 1.5em;
@@ -94,35 +99,40 @@
         }
       }
     }
-    .note-title{
-      input,span{
+    
+    .note-title {
+      input, span {
         display: inline-block;
         min-width: 100%;
-        border:none;
-        outline:none;
-        font-size:18px;
-        padding:10px 20px;
+        border: none;
+        outline: none;
+        font-size: 18px;
+        padding: 10px 20px;
       }
     }
-    .editor{
+    
+    .editor {
       height: calc(100% - 70px);
       position: relative;
-      textarea,.preview{
+      
+      textarea, .preview {
         position: absolute;
         min-width: 100%;
         min-height: 100%;
         padding: 20px;
       }
-      textarea{
+      
+      textarea {
         border: none;
-        resize:none;
-        outline:none;
+        resize: none;
+        outline: none;
         font-size: 14px;
         font-family: $font-hei;
       }
     }
-    code{
-      color:#f66
+    
+    code {
+      color: #f66
     }
     
   }

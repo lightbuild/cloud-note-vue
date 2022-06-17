@@ -12,7 +12,11 @@
   import auth from '@/lib/apis/auth';
   import NoteSidebar from '@/components/NoteDetail/NoteSidebar.vue';
   import NoteContent from '@/components/NoteDetail/NoteContent.vue';
-  
+  import NoteModule from '@/store/modules/note';
+
+  Component.registerHooks([
+    'beforeRouteUpdate'
+  ])
   @Component({
     components: {NoteContent, NoteSidebar, Layout}
   })
@@ -23,6 +27,11 @@
           this.$router.push({path: '/login'});
         }
       });
+    }
+  
+    beforeRouteUpdate (to: { query: { noteId: number; }; }, from: any, next: () => void) {
+      NoteModule.setCurNote({ curNoteId: +to.query.noteId})
+      next()
     }
   }
 </script>
