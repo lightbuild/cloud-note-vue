@@ -4,8 +4,8 @@
     <div class="note-detail-ct" v-show="curNote.id">
       <div class="note-header">
         <div class="note-status">
-          <span>创建日期：10分钟前</span>
-          <span>更新日期：2分钟前</span>
+          <span>创建日期：{{curNote.beatifyCreatedAt}}</span>
+          <span>更新日期：{{curNote.beatifyupdatedAt}}</span>
           <span>{{ statusText }}</span>
         </div>
         <div class="icon-wrapper">
@@ -18,7 +18,7 @@
       </div>
       <div class="editor">
         <textarea :value="curNote.content" @input="updateNote" placeholder="输入内容，支持markdown语法"></textarea>
-        <div class="preview markdown-body" v-show="!isShowPreview"></div>
+        <div class="preview markdown-body" v-show="isShowPreview"></div>
       </div>
     </div>
   </div>

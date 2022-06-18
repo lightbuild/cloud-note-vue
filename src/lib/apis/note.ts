@@ -25,8 +25,8 @@ export default {
     });
   },
 
-  updateNotebooks({noteId}: { noteId: string }, {title, content}: { title: string, content: string }) {
-    return request<NoteModifyResponse>(URL.UPDATE.replace(':noteId', noteId), 'PATCH', {title, content});
+  updateNotebooks({noteId}: { noteId: number }, {title, content}: { title: string, content: string }) {
+    return request<NoteModifyResponse>(URL.UPDATE.replace(':noteId', noteId.toString()), 'PATCH', {title, content});
   },
 
   deleteNotebook({noteId}: { noteId: string }) {

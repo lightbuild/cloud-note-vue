@@ -40,7 +40,7 @@
   })
   export default class NoteSideBar extends Vue {
     
-    get curBook() {
+    get curBook(){
       return NotebooksModule.curBook;
     }
     
@@ -68,7 +68,7 @@
       NoteModule.setNote(notebookId)
     }
     addNote() {
-      NoteModule.addNote({curId: this.curBook.id,newTitle:'无标题笔记',newContent:''})
+      NoteModule.addNote({curBookId: this.curBook.id,newTitle:'无标题笔记',newContent:''})
     }
   }
 </script>

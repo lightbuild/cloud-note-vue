@@ -9,7 +9,7 @@ class Notebooks extends VuexModule {
   notebooks: NListBaseData[] = [];
   bookId: number | null = null;
 
-  get curBook():{[key: string]: any}{
+  get curBook():{ [key: string]: any }{
     if (!Array.isArray(this.notebooks)) return {};
     if (!this.bookId) return this.notebooks[0] || {};
     return this.notebooks.find(item => item.id === this.bookId) || {};
