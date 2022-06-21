@@ -2,9 +2,9 @@ import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decor
 import store from '@/store';
 import Note from '@/lib/apis/note';
 import {Message} from 'element-ui';
-
 @Module({dynamic: true, store, name: 'note'})
 class Notebooks extends VuexModule {
+
   noteList: NoteBaseData[] = [];
   curNoteId: number | null = null;
 
@@ -43,7 +43,7 @@ class Notebooks extends VuexModule {
 
   @Action({rawError: true})
   setNote(curBookId: string) {
-    Note.getAll({notebookId: curBookId})
+    return Note.getAll({notebookId: curBookId})
       .then(res => {
         this.context.commit('setNoteM', res.data);
       });
@@ -51,7 +51,7 @@ class Notebooks extends VuexModule {
 
   @Action({rawError: true})
   addNote({curBookId, newTitle, newContent}: { curBookId: number, newTitle: string, newContent: string }) {
-    Note.addNote({notebookId: curBookId}, {title: newTitle, content: newContent})
+    return Note.addNote({notebookId: curBookId}, {title: newTitle, content: newContent})
       .then(res => {
         this.context.commit('addNoteM', res.data);
         Message.success(res.msg);
@@ -60,7 +60,7 @@ class Notebooks extends VuexModule {
 
   @Action({rawError: true})
   updateNote({curNoteId,newTitle, newContent}: {curNoteId:number,newTitle: string, newContent: string }){
-    Note.updateNote({noteId: curNoteId}, {title: newTitle, content: newContent})
+   return Note.updateNote({noteId: curNoteId}, {title: newTitle, content: newContent})
       .then(res => {
         this.context.commit('updateNoteM', {curNoteId,newTitle, newContent});
       });

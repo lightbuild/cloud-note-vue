@@ -6,7 +6,7 @@
         <div class="note-status">
           <span>创建日期：{{ curNote.beatifyCreatedAt }}</span>
           <span>更新日期：{{ curNote.beatifyupdatedAt }}</span>
-          <span>{{statusText}}</span>
+          <span>{{ statusText }}</span>
         </div>
         <div class="icon-wrapper">
           <my-icon name="fullscreen" @click="isShowPreview=!isShowPreview"></my-icon>
@@ -14,10 +14,12 @@
         </div>
       </div>
       <div class="note-title">
-        <input type="text" :value="curNote.title" @input="updateNoteTitle($event.target.value)" placeholder="输入标题">
+        <input type="text" :value="curNote.title" @input="updateNoteTitle($event.target.value)"
+               @keydown="statusText='正在输入中...'" placeholder="输入标题">
       </div>
       <div class="editor">
-        <textarea :value="curNote.content" @input="updateNoteContent($event.target.value)"
+        <textarea :value="curNote.content" @keydown="statusText='正在输入中...'"
+                  @input="updateNoteContent($event.target.value)"
                   placeholder="输入内容，支持markdown语法"></textarea>
         <div class="preview markdown-body" v-show="isShowPreview"></div>
       </div>
@@ -37,12 +39,13 @@
     components: {MyIcon}
   })
   export default class NoteContent extends Vue {
-    data(){
+    data() {
       return {
         statusText: '笔记未改动',
-        isShowPreview:false,
-      }
+        isShowPreview: false,
+      };
     }
+    
     get curNote() {
       return NoteModule.curNote;
     }
@@ -57,26 +60,28 @@
     
     
     updateNoteTitle(newTitle: string) {
-      const curNote = this.curNote;
       const debounceUpdate = _.debounce(function () {
         NoteModule.updateNote({
-          curNoteId: curNote.id,
+          curNoteId: this.curNote.id,
           newTitle: newTitle,
-          newContent: curNote.content
+          newContent: this.curNote.content
+        }).then(data => {
+          this.statusText = '已保存';
         });
-      }, 0);
+      }, 1000).bind(this);
       debounceUpdate();
     }
     
     updateNoteContent(newContent: string) {
-      const curNote = this.curNote;
       const debounceUpdate = _.debounce(function () {
         NoteModule.updateNote({
-          curNoteId: curNote.id,
-          newTitle: curNote.title,
+          curNoteId: this.curNote.id,
+          newTitle: this.curNote.title,
           newContent: newContent
+        }).then(data => {
+          this.statusText = '已保存';
         });
-      }, 300);
+      }, 500).bind(this);
       debounceUpdate();
     }
   }
