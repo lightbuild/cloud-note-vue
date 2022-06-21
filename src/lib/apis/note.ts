@@ -4,8 +4,8 @@ import beautifyDate from '@/lib/helper/beautifyDate';
 const URL = {
   GET: '/notes/from/:notebookId',
   ADD: '/notes/to/:notebookId',
-  UPDATE: '/note/:noteId',
-  DELETE: 'note/:noteId'
+  UPDATE: '/notes/:noteId',
+  DELETE: '/notes/:noteId'
 };
 
 export default {
@@ -17,7 +17,7 @@ export default {
             note.beatifyCreatedAt = beautifyDate(note.createdAt);
             note.beatifyUpdateAt = beautifyDate(note.updatedAt);
             return note;
-          }).sort((note1, note2) => note1.updatedAt < note2.updatedAt ? -1 : 1);
+          }).sort((note1, note2) => note1.updatedAt < note2.updatedAt ? 1 : -1);
           resolve(res);
         }).catch(err => {
         reject(err.msg);
@@ -25,14 +25,14 @@ export default {
     });
   },
 
-  updateNotebooks({noteId}: { noteId: number }, {title, content}: { title: string, content: string }) {
+  updateNote({noteId}: { noteId: number }, {title, content}: { title: string, content: string }) {
     return request<NoteModifyResponse>(URL.UPDATE.replace(':noteId', noteId.toString()), 'PATCH', {title, content});
   },
 
-  deleteNotebook({noteId}: { noteId: string }) {
+  deleteNote({noteId}: { noteId: string }) {
     return request<NoteModifyResponse>(URL.DELETE.replace(':noteId', noteId), 'DELETE');
   },
-  addNotebook({notebookId}: { notebookId: number }, {title = '', content = ''} = {}) {
+  addNote({notebookId}: { notebookId: number }, {title = '', content = ''} = {}) {
     return new Promise<NoteModifyResponse>((resolve, reject) => {
       request<NoteModifyResponse>(URL.ADD.replace(':notebookId', notebookId.toString()),'POST',{title,content})
         .then(res => {

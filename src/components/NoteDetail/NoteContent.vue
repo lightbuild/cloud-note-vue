@@ -4,9 +4,9 @@
     <div class="note-detail-ct" v-show="curNote.id">
       <div class="note-header">
         <div class="note-status">
-          <span>创建日期：{{curNote.beatifyCreatedAt}}</span>
-          <span>更新日期：{{curNote.beatifyupdatedAt}}</span>
-          <span>{{ statusText }}</span>
+          <span>创建日期：{{ curNote.beatifyCreatedAt }}</span>
+          <span>更新日期：{{ curNote.beatifyupdatedAt }}</span>
+          <span>{{statusText}}</span>
         </div>
         <div class="icon-wrapper">
           <my-icon name="fullscreen" @click="isShowPreview=!isShowPreview"></my-icon>
@@ -14,10 +14,11 @@
         </div>
       </div>
       <div class="note-title">
-        <input type="text" :value="curNote.title" @input="updateNote" placeholder="输入标题">
+        <input type="text" :value="curNote.title" @input="updateNoteTitle($event.target.value)" placeholder="输入标题">
       </div>
       <div class="editor">
-        <textarea :value="curNote.content" @input="updateNote" placeholder="输入内容，支持markdown语法"></textarea>
+        <textarea :value="curNote.content" @input="updateNoteContent($event.target.value)"
+                  placeholder="输入内容，支持markdown语法"></textarea>
         <div class="preview markdown-body" v-show="isShowPreview"></div>
       </div>
     </div>
@@ -29,18 +30,22 @@
   import {Component} from 'vue-property-decorator';
   import MyIcon from '@/components/MyIcon.vue';
   import NoteModule from '@/store/modules/note';
+  import _ from 'lodash';
+  
   
   @Component({
     components: {MyIcon}
   })
   export default class NoteContent extends Vue {
+    data(){
+      return {
+        statusText: '笔记未改动',
+        isShowPreview:false,
+      }
+    }
     get curNote() {
       return NoteModule.curNote;
     }
-    
-    notes: NoteBaseData[] = [];
-    statusText = '笔记本未改动';
-    isShowPreview = false;
     
     get previewContent() {
       return this.curNote.content || '';
@@ -50,8 +55,29 @@
       console.log('删除标题');
     }
     
-    updateNote() {
-      console.log('修改标题或内容');
+    
+    updateNoteTitle(newTitle: string) {
+      const curNote = this.curNote;
+      const debounceUpdate = _.debounce(function () {
+        NoteModule.updateNote({
+          curNoteId: curNote.id,
+          newTitle: newTitle,
+          newContent: curNote.content
+        });
+      }, 0);
+      debounceUpdate();
+    }
+    
+    updateNoteContent(newContent: string) {
+      const curNote = this.curNote;
+      const debounceUpdate = _.debounce(function () {
+        NoteModule.updateNote({
+          curNoteId: curNote.id,
+          newTitle: curNote.title,
+          newContent: newContent
+        });
+      }, 300);
+      debounceUpdate();
     }
   }
 </script>

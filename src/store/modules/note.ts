@@ -11,7 +11,7 @@ class Notebooks extends VuexModule {
   get curNote(): { [key: string]: any } {
     if (!Array.isArray(this.noteList)) return {};
     if (!this.curNoteId) return this.noteList[0] || {};
-    return this.noteList.find(item => item.id === this.curNoteId) || {};
+    return this.noteList.find(note => note.id === this.curNoteId) || {};
   }
 
   @Mutation
@@ -25,11 +25,16 @@ class Notebooks extends VuexModule {
   }
 
   @Mutation
-  updateNoteM() {
+  updateNoteM({curNoteId,newTitle, newContent}: {curNoteId:number,newTitle: string, newContent: string }) {
+    const curNote = this.noteList.find(note => note.id === curNoteId);
+    curNote!.title = newTitle;
+    curNote!.content = newContent;
   }
 
   @Mutation
-  deleteNoteM() {}
+  deleteNoteM() {
+    console.log('删除功能');
+  }
 
   @Mutation
   setCurNote({curNoteId}: { curNoteId: number }) {
@@ -46,7 +51,7 @@ class Notebooks extends VuexModule {
 
   @Action({rawError: true})
   addNote({curBookId, newTitle, newContent}: { curBookId: number, newTitle: string, newContent: string }) {
-    Note.addNotebook({notebookId: curBookId}, {title: newTitle, content: newContent})
+    Note.addNote({notebookId: curBookId}, {title: newTitle, content: newContent})
       .then(res => {
         this.context.commit('addNoteM', res.data);
         Message.success(res.msg);
@@ -54,10 +59,10 @@ class Notebooks extends VuexModule {
   }
 
   @Action({rawError: true})
-  updateNote({newTitle, newContent}: {newTitle: string, newContent: string }) {
-    Note.updateNotebooks({noteId: this.curNoteId!}, {title: newTitle, content: newContent})
+  updateNote({curNoteId,newTitle, newContent}: {curNoteId:number,newTitle: string, newContent: string }){
+    Note.updateNote({noteId: curNoteId}, {title: newTitle, content: newContent})
       .then(res => {
-        this.context.commit('updateNoteM', {newTitle, newContent});
+        this.context.commit('updateNoteM', {curNoteId,newTitle, newContent});
       });
   }
 
