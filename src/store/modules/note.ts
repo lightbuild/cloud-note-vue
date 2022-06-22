@@ -32,8 +32,8 @@ class Notebooks extends VuexModule {
   }
 
   @Mutation
-  deleteNoteM() {
-    console.log('删除功能');
+  deleteNoteM(curNoteId:number) {
+    this.noteList=this.noteList.filter(note => note.id !== curNoteId)
   }
 
   @Mutation
@@ -67,7 +67,13 @@ class Notebooks extends VuexModule {
   }
 
   @Action({rawError: true})
-  deleteNote() {}
+  deleteNote(curNoteId:number) {
+    return Note.deleteNote({noteId:curNoteId})
+      .then(res => {
+        this.context.commit('deleteNoteM',curNoteId);
+        Message.success(res.msg);
+      })
+  }
 }
 
 const NoteModule = getModule(Notebooks);

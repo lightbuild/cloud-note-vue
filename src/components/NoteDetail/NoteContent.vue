@@ -39,6 +39,8 @@
     components: {MyIcon}
   })
   export default class NoteContent extends Vue {
+    statusText: string | undefined;
+    
     data() {
       return {
         statusText: '笔记未改动',
@@ -55,12 +57,16 @@
     }
     
     deleteNote() {
-      console.log('删除标题');
+      console.log(typeof (this.curNote.id)
+      );
+      NoteModule.deleteNote(this.curNote.id)
+        .then(data => {
+          this.$router.replace({path: '/note'});
+        });
     }
     
-    
     updateNoteTitle(newTitle: string) {
-      const debounceUpdate = _.debounce(function () {
+      const debounceUpdate = _.debounce(() => {
         NoteModule.updateNote({
           curNoteId: this.curNote.id,
           newTitle: newTitle,
@@ -68,12 +74,12 @@
         }).then(data => {
           this.statusText = '已保存';
         });
-      }, 1000).bind(this);
+      }, 0);
       debounceUpdate();
     }
     
     updateNoteContent(newContent: string) {
-      const debounceUpdate = _.debounce(function () {
+      const debounceUpdate = _.debounce(() => {
         NoteModule.updateNote({
           curNoteId: this.curNote.id,
           newTitle: this.curNote.title,
@@ -81,7 +87,7 @@
         }).then(data => {
           this.statusText = '已保存';
         });
-      }, 500).bind(this);
+      }, 0);
       debounceUpdate();
     }
   }

@@ -29,8 +29,8 @@ export default {
     return request<NoteModifyResponse>(URL.UPDATE.replace(':noteId', noteId.toString()), 'PATCH', {title, content});
   },
 
-  deleteNote({noteId}: { noteId: string }) {
-    return request<NoteModifyResponse>(URL.DELETE.replace(':noteId', noteId), 'DELETE');
+  deleteNote({noteId}: { noteId: number }) {
+    return request<NoteModifyResponse>(URL.DELETE.replace(':noteId', noteId.toString()), 'DELETE');
   },
   addNote({notebookId}: { notebookId: number }, {title = '', content = ''} = {}) {
     return new Promise<NoteModifyResponse>((resolve, reject) => {

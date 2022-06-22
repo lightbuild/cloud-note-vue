@@ -13,7 +13,7 @@ export default{
     return new Promise<NListResponse>((resolve, reject)=>{
       request<NListResponse>(URL.GET)
         .then(res=>{
-          res.data = res.data && res.data.sort((notebook1,notebook2)=> notebook1.createdAt < notebook2.createdAt ? 1 :-1)
+          res.data = res.data && res.data.sort((notebook1,notebook2)=> notebook1.createdAt < notebook2.createdAt ? -1 :1)
           res.data?.forEach(notebook=>{
             notebook.beatifyCreatedAt = beautifyDate(notebook.createdAt)
           })
