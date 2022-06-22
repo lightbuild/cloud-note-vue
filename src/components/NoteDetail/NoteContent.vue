@@ -51,9 +51,7 @@
       };
     }
     
-    get curNote() {
-      return NoteModule.curNote;
-    }
+    curNote = NoteModule.curNote
     
     get previewContent() {
       return md.render(this.curNote.content||'')
@@ -75,7 +73,7 @@
         }).then(data => {
           this.statusText = '已保存';
         });
-      }, 0);
+      }, 300);
       debounceUpdate();
     }
     
@@ -88,7 +86,7 @@
         }).then(data => {
           this.statusText = '已保存';
         });
-      }, 0);
+      }, 300);
       debounceUpdate();
     }
   }

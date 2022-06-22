@@ -26,9 +26,9 @@ class Notebooks extends VuexModule {
 
   @Mutation
   updateNoteM({curNoteId,newTitle, newContent}: {curNoteId:number,newTitle: string, newContent: string }) {
-    const curNote = this.noteList.find(note => note.id === curNoteId);
-    curNote!.title = newTitle;
-    curNote!.content = newContent;
+    const note = this.noteList.find(note => note.id === curNoteId);
+    note!.title = newTitle;
+    note!.content = newContent;
   }
 
   @Mutation
