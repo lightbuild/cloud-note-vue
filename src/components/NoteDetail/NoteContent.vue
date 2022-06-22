@@ -18,10 +18,10 @@
                @keydown="statusText='正在输入中...'" placeholder="输入标题">
       </div>
       <div class="editor">
-        <textarea :value="curNote.content" @keydown="statusText='正在输入中...'"
+        <textarea v-show="!isShowPreview" :value="curNote.content" @keydown="statusText='正在输入中...'"
                   @input="updateNoteContent($event.target.value)"
                   placeholder="输入内容，支持markdown语法"></textarea>
-        <div class="preview markdown-body" v-show="isShowPreview"></div>
+        <div class="preview markdown-body" v-html="previewContent" v-show="isShowPreview"></div>
       </div>
     </div>
   </div>
@@ -33,7 +33,10 @@
   import MyIcon from '@/components/MyIcon.vue';
   import NoteModule from '@/store/modules/note';
   import _ from 'lodash';
-  
+  import MarkdownIt from 'markdown-it'
+
+
+  let md = new MarkdownIt()
   
   @Component({
     components: {MyIcon}
@@ -53,12 +56,10 @@
     }
     
     get previewContent() {
-      return this.curNote.content || '';
+      return md.render(this.curNote.content||'')
     }
     
     deleteNote() {
-      console.log(typeof (this.curNote.id)
-      );
       NoteModule.deleteNote(this.curNote.id)
         .then(data => {
           this.$router.replace({path: '/note'});
