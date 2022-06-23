@@ -13,6 +13,7 @@
   import NoteSidebar from '@/components/NoteDetail/NoteSidebar.vue';
   import NoteContent from '@/components/NoteDetail/NoteContent.vue';
   import NoteModule from '@/store/modules/note';
+  import NotebooksModule from '@/store/modules/notebooks';
 
   Component.registerHooks([
     'beforeRouteUpdate'
@@ -25,11 +26,20 @@
       auth.getInfo().then(res => {
         if (!res.isLogin) {
           this.$router.push({path: '/login'});
+        }else{
+          NotebooksModule.getNotebooks()
+            .then(res => {
+              const curBookId = this.$route.query.notebookId as string;
+              NotebooksModule.setCurbookM(curBookId);
+              return NoteModule.getNote(NotebooksModule.curBook.id)
+            }).then(res => {
+              NoteModule.setCurNote({curNoteId:+this.$route.query.noteId})
+          })
         }
       });
     }
   
-    beforeRouteUpdate (to: { query: { noteId: number; }; }, from: any, next: () => void) {
+    beforeRouteUpdate (to: { query: { noteId: string; }; }, from: any, next: () => void) {
       NoteModule.setCurNote({ curNoteId: +to.query.noteId})
       next()
     }

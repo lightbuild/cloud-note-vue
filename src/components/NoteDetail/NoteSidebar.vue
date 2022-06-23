@@ -39,33 +39,21 @@
     components: {MyIcon}
   })
   export default class NoteSideBar extends Vue {
-    
     get curBook(){
       return NotebooksModule.curBook;
     }
-    
     get notebooks() {
       return NotebooksModule.notebooks;
     }
-    
     get notes() {
       return NoteModule.noteList;
-    }
-    
-    created() {
-      NotebooksModule.getNotebooks()
-        .then(res => {
-          const curBookId = this.$route.query.notebookId as string;
-          NotebooksModule.setCurbookM(curBookId);
-          NoteModule.setNote(this.curBook['id'])
-        })
     }
     onCommand(notebookId:string) {
       if (notebookId === 'trash') {
         return this.$router.push({path: '/trash'});
       }
       NotebooksModule.setCurbookM(notebookId)
-      NoteModule.setNote(notebookId)
+      NoteModule.getNote(notebookId)
     }
     addNote() {
       NoteModule.addNote({curBookId: this.curBook.id,newTitle:'无标题笔记',newContent:''})

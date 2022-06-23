@@ -43,6 +43,7 @@
   })
   export default class NoteContent extends Vue {
     statusText: string | undefined;
+    // statusText: string | undefined;
     
     data() {
       return {
@@ -51,7 +52,9 @@
       };
     }
     
-    curNote = NoteModule.curNote
+    get curNote(){
+      return NoteModule.curNote
+    }
     
     get previewContent() {
       return md.render(this.curNote.content||'')

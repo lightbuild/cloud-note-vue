@@ -37,12 +37,12 @@ class Notebooks extends VuexModule {
   }
 
   @Mutation
-  setCurNote({curNoteId}: { curNoteId: number }) {
+  setCurNote({curNoteId}: { curNoteId: number | null}) {
     this.curNoteId = curNoteId;
   }
 
   @Action({rawError: true})
-  setNote(curBookId: string) {
+  getNote(curBookId: string) {
     return Note.getAll({notebookId: curBookId})
       .then(res => {
         this.context.commit('setNoteM', res.data);
