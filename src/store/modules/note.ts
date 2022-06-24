@@ -61,9 +61,6 @@ class Notebooks extends VuexModule {
   @Action({rawError: true})
   updateNote({curNoteId,newTitle, newContent}: {curNoteId:number,newTitle: string, newContent: string }){
    return Note.updateNote({noteId: curNoteId}, {title: newTitle, content: newContent})
-      .then(res => {
-        this.context.commit('updateNoteM', {curNoteId,newTitle, newContent});
-      });
   }
 
   @Action({rawError: true})
