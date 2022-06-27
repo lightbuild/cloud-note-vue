@@ -17,14 +17,14 @@
       <div>更新时间</div>
       <div>标题</div>
     </div>
-        <ul class="notes">
-          <li v-for="note of notes" :key="note.id">
-            <router-link :to="`/note?noteId=${note.id}&notebookId=${curBook.id}`">
-              <span class="data">{{ note.beatifyUpdateAt }}</span>
-              <span class="title">{{ note.title }}</span>
-            </router-link>
-          </li>
-        </ul>
+    <ul class="notes">
+      <li v-for="note of notes" :key="note.id">
+        <router-link :to="`/note?noteId=${note.id}&notebookId=${curBook.id}`">
+          <span class="data">{{ note.beatifyUpdateAt }}</span>
+          <span class="title">{{ note.title }}</span>
+        </router-link>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -39,24 +39,28 @@
     components: {MyIcon}
   })
   export default class NoteSideBar extends Vue {
-    get curBook(){
+    get curBook() {
       return NotebooksModule.curBook;
     }
+    
     get notebooks() {
       return NotebooksModule.notebooks;
     }
+    
     get notes() {
       return NoteModule.noteList;
     }
-    onCommand(notebookId:string) {
+    
+    onCommand(notebookId: string) {
       if (notebookId === 'trash') {
         return this.$router.push({path: '/trash'});
       }
-      NotebooksModule.setCurbookM(notebookId)
-      NoteModule.getNote(notebookId)
+      NotebooksModule.setCurbookM(notebookId);
+      NoteModule.getNote(notebookId);
     }
+    
     addNote() {
-      NoteModule.addNote({curBookId: this.curBook.id,newTitle:'无标题笔记',newContent:''})
+      NoteModule.addNote({curBookId: this.curBook.id, newTitle: '无标题笔记', newContent: ''});
     }
   }
 </script>

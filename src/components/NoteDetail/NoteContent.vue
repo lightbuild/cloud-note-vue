@@ -86,7 +86,7 @@
         }).catch(data => {
           this.statusText = '保存出错';
         });
-      }, 3000);
+      }, 1500);
       deboundeUpdate();
     }
     
@@ -110,7 +110,7 @@
         }).catch(data => {
           this.statusText = '保存出错';
         });
-      }, 3000);
+      }, 1500);
       deboundeUpdate();
     }
     
@@ -128,83 +128,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "~@/assets/style/helper.scss";
-  
-  .note-detail {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    
-    .note-empty {
-      font-size: 50px;
-      color: #ccc;
-      text-align: center;
-      margin-top: 100px;
-    }
-    
-    .note-detail-ct {
-      min-height: 100%;
-    }
-    
-    .note-header {
-      font-size: 12px;
-      padding: 4px 20px;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      
-      .note-status span {
-        color: #999;
-        margin-right: 4px;
-      }
-      
-      .icon-wrapper {
-        cursor: pointer;
-        
-        .icon {
-          color: #999;
-          width: 1.5em;
-          height: 1.5em;
-          margin-right: 6px;
-        }
-      }
-    }
-    
-    .note-title {
-      input, span {
-        display: inline-block;
-        min-width: 100%;
-        border: none;
-        outline: none;
-        font-size: 18px;
-        padding: 10px 20px;
-      }
-    }
-    
-    .editor {
-      height: calc(100% - 70px);
-      position: relative;
-      
-      textarea, .preview {
-        position: absolute;
-        min-width: 100%;
-        min-height: 100%;
-        padding: 20px;
-      }
-      
-      textarea {
-        border: none;
-        resize: none;
-        outline: none;
-        font-size: 14px;
-        font-family: $font-hei;
-      }
-    }
-    
-    code {
-      color: #f66
-    }
-    
-  }
+  @import "~@/assets/style/note-content.scss";
 </style>
