@@ -35,8 +35,6 @@ interface LogoutResponse {
   msg: string;
 }
 
-
-
 type NListBaseData = {
   id: number,
   noteCounts:number,
@@ -60,6 +58,7 @@ interface NotebooksModifyData {
 type NoteBaseData = {
   isDelete:boolean,
   id:number,
+  notebookId:number,
   title:string,
   content:string,
   userId:string,
@@ -79,8 +78,11 @@ interface NoteModifyResponse {
   data?: NoteBaseData
 }
 
-
 interface TrashResponse {
   msg:string,
   data?:NoteBaseData[]
+}
+
+interface TrashModifyResponse {
+  msg:string
 }

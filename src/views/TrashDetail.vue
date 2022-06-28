@@ -10,7 +10,7 @@
         <ul class="notes">
           <li v-for="note in trashNotes" :key="note.id">
             <router-link :to="`/trash?noteId=${note.id}`">
-              <span class="date">{{ note.updatedAtFriendly }}</span>
+              <span class="date">{{ note.beatifyUpdateAt }}</span>
               <span class="title">{{ note.title }}</span>
             </router-link>
           </li>
@@ -18,9 +18,9 @@
       </div>
       <div class="note-detail">
         <div class="note-bar" v-if="true">
-          <span> 创建日期: {{ curTrashNote.createdAtFriendly }}</span>
+          <span> 创建日期: {{ curTrashNote.beatifyCreatedAt }}</span>
           <span> | </span>
-          <span> 更新日期: {{ curTrashNote.updatedAtFriendly }}</span>
+          <span> 更新日期: {{ curTrashNote.beatifyUPdateAt }}</span>
           <span> | </span>
           <span> 所属笔记本: {{ belongTo }}</span>
           
@@ -44,6 +44,9 @@
   import Layout from '@/components/Layout.vue';
   import auth from '@/lib/apis/auth';
   import MarkdownIt from 'markdown-it';
+  import TrashNoteModule from '@/store/modules/trash';
+  import NotebooksModule from '@/store/modules/notebooks';
+  import NoteModule from '@/store/modules/note';
   
   let md = new MarkdownIt();
   @Component({
@@ -54,8 +57,37 @@
       auth.getInfo().then(res => {
         if (!res.isLogin) {
           this.$router.push({path: '/login'});
+        } else {
+          NotebooksModule.getNotebooks()
+            .then(res => {
+              TrashNoteModule.getTrashNote()
+                .then(res => {
+                  TrashNoteModule.setCurTrashNote({curTrashNoteId: +this.$route.query.noteId});
+                  this.$router.replace({
+                    path: '/trash',
+                    query: {noteId: TrashNoteModule.curTrashNoteId!.toString()}
+                  });
+                });
+            });
+          
         }
       });
+    }
+    
+    get trashNotes() {
+      return TrashNoteModule.trashNotes;
+    }
+    
+    get curTrashNote() {
+      return TrashNoteModule.curTrashNote;
+    }
+    
+    get belongTo() {
+      return TrashNoteModule.belongTo;
+    }
+    
+    get compiledMarkdown() {
+      return md.render(TrashNoteModule.curTrashNote.content || '');
     }
     
     onDelete() {
@@ -66,26 +98,10 @@
       console.log('恢复');
     }
     
-    get compiledMarkdown() {
-      return md.render(this.curTrashNote.content || '');
+    beforeRouteUpdate(to: { query: { noteId: string; }; }, from: any, next: () => void) {
+      TrashNoteModule.setCurTrashNote({curTrashNoteId: +to.query.noteId});
+      next();
     }
-    
-    trashNotes = [{
-      id: 333,
-      title: '回收站1111',
-      content: '哈哈哈',
-      updatedAtFriendly: '1天前'
-    }];
-    
-    curTrashNote = {
-      id: 333,
-      title: '回收站222',
-      content: '哈哈哈',
-      createdAtFriendly: '2天前',
-      updatedAtFriendly: '1天前'
-    };
-    
-    belongTo = 'test222';
   }
 
 </script>
