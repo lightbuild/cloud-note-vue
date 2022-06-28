@@ -36,7 +36,7 @@ class Notebooks extends VuexModule {
   }
 
   @Mutation
-  setCurTrashNote({curTrashNoteId}: { curTrashNoteId: number | null}) {
+  setCurTrashNote({curTrashNoteId = null} = {}) {
     this.curTrashNoteId = curTrashNoteId;
   }
 
@@ -61,8 +61,7 @@ class Notebooks extends VuexModule {
   revertTrashNote(curTrashNoteId:number) {
     return Trash.revertNote({noteId:curTrashNoteId})
       .then(res => {
-        // this.context.commit('deleteTrashNoteM',curTrashNoteId);
-        console.log('恢复成功');
+        this.context.commit('deleteTrashNoteM',curTrashNoteId);
         Message.success(res.msg);
       })
   }

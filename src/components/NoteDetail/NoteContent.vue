@@ -5,7 +5,7 @@
       <div class="note-header">
         <div class="note-status">
           <span>创建日期：{{ curNote.beatifyCreatedAt }}</span>
-          <span>更新日期：{{ curNote.beatifyupdatedAt }}</span>
+          <span>更新日期：{{ curNote.beatifyUpdateAt }}</span>
           <span>{{ statusText }}</span>
         </div>
         <div class="icon-wrapper">

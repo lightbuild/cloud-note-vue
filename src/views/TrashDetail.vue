@@ -20,10 +20,9 @@
         <div class="note-bar" v-if="true">
           <span> 创建日期: {{ curTrashNote.beatifyCreatedAt }}</span>
           <span> | </span>
-          <span> 更新日期: {{ curTrashNote.beatifyUPdateAt }}</span>
+          <span> 更新日期: {{ curTrashNote.beatifyUpdateAt }}</span>
           <span> | </span>
           <span> 所属笔记本: {{ belongTo }}</span>
-          
           <a class="btn action" @click="onRevert">恢复</a>
           <a class="btn action" @click="onDelete">彻底删除</a>
         </div>
@@ -63,13 +62,8 @@
               TrashNoteModule.getTrashNote()
                 .then(res => {
                   TrashNoteModule.setCurTrashNote({curTrashNoteId: +this.$route.query.noteId});
-                  this.$router.replace({
-                    path: '/trash',
-                    query: {noteId: TrashNoteModule.curTrashNoteId!.toString()}
-                  });
                 });
             });
-          
         }
       });
     }
@@ -91,11 +85,30 @@
     }
     
     onDelete() {
-      console.log('删除');
+      this.$confirm('删除后将无法恢复', '确定删除？', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return TrashNoteModule.deleteTrashNote(this.curTrashNote.id);
+      }).then(() => {
+        TrashNoteModule.setCurTrashNote();
+        this.$router.replace({
+          path: '/trash',
+          query: {noteId: TrashNoteModule.curTrashNote.id}
+        });
+      });
     }
     
     onRevert() {
-      console.log('恢复');
+      TrashNoteModule.revertTrashNote(this.curTrashNote.id)
+        .then(() => {
+          TrashNoteModule.setCurTrashNote();
+          this.$router.replace({
+            path: '/trash',
+            query: {noteId: TrashNoteModule.curTrashNote.id}
+          });
+        });
     }
     
     beforeRouteUpdate(to: { query: { noteId: string; }; }, from: any, next: () => void) {
@@ -118,11 +131,19 @@
     flex: 1;
     
     .note-bar {
+      padding: 10.75px 20px;
+      border-bottom: 1px solid #ccc;
+      
       .action {
+        color: #666;
+        background-color: #fff;
+        box-shadow: 0px 0px 2px 0px #ccc;
+        cursor: pointer;
+        display: inline-block;
         float: right;
         margin-left: 10px;
         padding: 2px 4px;
-        font-size: 12px;
+        font-size: 14px;
       }
     }
   }
